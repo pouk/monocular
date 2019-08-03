@@ -7,7 +7,9 @@
       "hoist": true
     },
     "version": {
-      "allowBranch": "master"
+      "allowBranch": "master",
+      "conventionalCommits": true,
+      "message": "chore(release): %s"
     }
   },
   "version": "0.0.0"
