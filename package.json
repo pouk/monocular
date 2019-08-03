@@ -20,5 +20,8 @@
   "name": "monocular",
   "devDependencies": {
     "lerna": "^3.16.4"
+  },
+  "dependencies": {
+    "husky": "^3.0.2"
   }
 }
