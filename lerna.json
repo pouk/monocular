@@ -1,0 +1,14 @@
+{
+  "packages": [
+    "packages/*"
+  ],
+  "command": {
+    "bootstrap": {
+      "hoist": true
+    },
+    "version": {
+      "allowBranch": "master"
+    }
+  },
+  "version": "0.0.0"
+}

@@ -16,5 +16,9 @@
   "bugs": {
     "url": "https://github.com/pouk/monocular/issues"
   },
-  "homepage": "https://github.com/pouk/monocular#readme"
+  "homepage": "https://github.com/pouk/monocular#readme",
+  "name": "monocular",
+  "devDependencies": {
+    "lerna": "^3.16.4"
+  }
 }
