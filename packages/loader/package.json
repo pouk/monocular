@@ -1,0 +1,28 @@
+{
+  "name": "@monocular/loader",
+  "version": "0.0.0",
+  "description": "Partial image loader with smart caching mechanism",
+  "homepage": "https://github.com/pouk/monocular/tree/master/packages/loader#readme",
+  "license": "MIT",
+  "main": "index.js",
+  "directories": {
+    "src": "src",
+    "test": "test"
+  },
+  "files": [
+    "src"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pouk/monocular.git"
+  },
+  "scripts": {
+    "test": "ava -v"
+  },
+  "bugs": {
+    "url": "https://github.com/pouk/monocular/issues"
+  },
+  "devDependencies": {
+    "ava": "^2.2.0"
+  }
+}
