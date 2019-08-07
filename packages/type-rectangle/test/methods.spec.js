@@ -45,3 +45,11 @@ test('intersectionOf', t => {
     void 0
   )
 })
+
+test('areaOf', t => {
+  const { areaOf } = Rectangle
+
+  const A = Rectangle(Point(1, 1), Point(3, 3))
+
+  t.is(areaOf(A), 4)
+})

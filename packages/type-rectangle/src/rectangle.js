@@ -14,8 +14,6 @@ function Rectangle (a, c) {
   const width = right - left
   const height = bottom - top
 
-  const area = width * height
-
   const spec = {
     a,
     b,
@@ -26,8 +24,7 @@ function Rectangle (a, c) {
     bottom,
     right,
     width,
-    height,
-    area
+    height
   }
 
   return Object.assign(this, spec)

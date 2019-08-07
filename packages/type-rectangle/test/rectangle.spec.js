@@ -37,6 +37,4 @@ test('computed properties', t => {
 
   t.is(rect.width, 3)
   t.is(rect.height, 4)
-
-  t.is(rect.area, 12)
 })

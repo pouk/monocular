@@ -27,7 +27,13 @@ function intersectionOf (A, B) {
   return Rectangle(Point(top, left), Point(bottom, right))
 }
 
+function areaOf (A) {
+  const { width, height } = A
+  return width * height
+}
+
 module.exports = {
   hasIntersection,
-  intersectionOf
+  intersectionOf,
+  areaOf
 }
