@@ -1,0 +1,31 @@
+{
+  "name": "@monocular/type-shape",
+  "version": "0.0.0",
+  "description": "Type for a various shapes representation",
+  "homepage": "https://github.com/pouk/monocular/tree/master/packages/type-shape#readme",
+  "license": "MIT",
+  "main": "index.js",
+  "directories": {
+    "src": "src",
+    "test": "test"
+  },
+  "files": [
+    "src"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pouk/monocular.git"
+  },
+  "scripts": {
+    "test": "ava -v"
+  },
+  "bugs": {
+    "url": "https://github.com/pouk/monocular/issues"
+  },
+  "dependencies": {
+    "@monocular/union-type": "*"
+  },
+  "devDependencies": {
+    "ava": "^2.2.0"
+  }
+}
