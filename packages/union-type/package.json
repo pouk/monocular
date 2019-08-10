@@ -1,0 +1,25 @@
+{
+  "name": "@monocular/union-type",
+  "version": "0.0.0",
+  "description": "Union types for JavaScript",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "dependencies": {
+    "debug": "^4.1.1",
+    "ramda": "^0.26.1"
+  },
+  "scripts": {
+    "test": "ava"
+  },
+  "keywords": [
+    "union",
+    "type",
+    "adt"
+  ],
+  "license": "MIT",
+  "devDependencies": {
+    "ava": "^2.1.0"
+  }
+}
