@@ -12,3 +12,7 @@ test('attributes', t => {
   t.is(point.x, 3)
   t.is(point.y, 2)
 })
+
+test('iterator', t => {
+  t.deepEqual([...Point(3, 2)], [3, 2])
+})

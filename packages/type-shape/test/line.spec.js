@@ -15,3 +15,10 @@ test('attributes', t => {
   t.is(line.a, a)
   t.is(line.b, b)
 })
+
+test('iterator', t => {
+  const a = Point(3, 2)
+  const b = Point(6, 3)
+
+  t.deepEqual([...Line(a, b)], [a, b])
+})
