@@ -23,7 +23,8 @@
     "url": "https://github.com/pouk/monocular/issues"
   },
   "dependencies": {
-    "@monocular/union-type": "*"
+    "@monocular/union-type": "*",
+    "ramda": "^0.26.1"
   },
   "devDependencies": {
     "ava": "^2.2.0"
