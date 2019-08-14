@@ -1,7 +1,13 @@
 <template lang="pug">
   div.home
     img(src="../assets/logo.png")
-    mx-minimap#minimap(@input="handleFocusChange")
+    div#minimap-wrapper
+      mx-minimap(
+        @update="handleFocusChange"
+        :original-size="{ 'width': 500, 'height': 1000 }"
+        :scale-factor="1 / 5"
+        :zoom-level="1"
+      )
 </template>
 
 <script>
@@ -24,7 +30,7 @@ export default {
 </script>
 
 <style>
-#minimap {
+#minimap-wrapper {
   width: 400px;
   height: 400px;
 }
