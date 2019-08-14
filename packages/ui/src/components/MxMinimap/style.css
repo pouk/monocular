@@ -1,0 +1,15 @@
+.outer-container {
+  position: relative;
+}
+
+.outer-area {
+  position: absolute;
+}
+
+.inner-container {
+  position: relative;
+}
+
+.inner-area {
+  position: absolute;
+}

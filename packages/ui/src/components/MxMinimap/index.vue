@@ -1,6 +1,8 @@
 <template lang="pug">
-  div.hello
-    h1 {{ msg }}
+  div.outer-container
+    div.outer-area
+      div.inner-container
+        div.inner-area
 </template>
 
 <script src="./main.js"></script>

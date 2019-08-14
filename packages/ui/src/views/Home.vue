@@ -1,17 +1,31 @@
 <template lang="pug">
   div.home
     img(src="../assets/logo.png")
-    hello-world(msg="Welcome to Your Vue.js App")
+    mx-minimap#minimap(@input="handleFocusChange")
 </template>
 
 <script>
 // @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld'
+import MxMinimap from '@/components/MxMinimap'
+
+function handleFocusChange (e) {
+  console.log(e)
+}
 
 export default {
   name: 'home',
   components: {
-    HelloWorld
+    MxMinimap
+  },
+  methods: {
+    handleFocusChange
   }
 }
 </script>
+
+<style>
+#minimap {
+  width: 400px;
+  height: 400px;
+}
+</style>
