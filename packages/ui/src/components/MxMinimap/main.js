@@ -58,43 +58,26 @@ const computed = {
       height
     }
   },
-  arenaPosition () {
-    const { containerSize } = this
-    const { width, height } = this.arenaSize
+  boundingRectMargin () {
+    const { containerSize, arenaSize } = this
 
-    if (!containerSize) {
+    const boundsFrom = (dx, dy) => {
       return {
-        left: 0,
-        top: 0
+        left: dx,
+        top: dy,
+        right: dx,
+        bottom: dy
       }
     }
 
-    const centerX = containerSize.width / 2
-    const centerY = containerSize.height / 2
-
-    const left = centerX - (width / 2)
-    const top = centerY - (height / 2)
-
-    return {
-      left,
-      top
+    if (!containerSize) {
+      return boundsFrom(0, 0)
     }
-  },
-  arenaStyle () {
-    const { arenaSize } = this
 
-    return {
-      width: `${arenaSize.width}px`,
-      height: `${arenaSize.height}px`
-    }
-  },
-  wrapperStyle () {
-    const { arenaPosition } = this
+    const dx = (containerSize.width - arenaSize.width) / 2
+    const dy = (containerSize.height - arenaSize.height) / 2
 
-    return {
-      'padding-top': `${arenaPosition.top}px`,
-      'padding-left': `${arenaPosition.left}px`
-    }
+    return boundsFrom(dx, dy)
   },
   selectionSize () {
     const { originalSize, zoomLevel } = this
@@ -133,34 +116,38 @@ const computed = {
 }
 
 function mounted () {
-  const { container } = this.$refs
+  const { $container, $arena } = this.$refs
 
-  const { clientHeight, clientWidth } = container
+  const { clientHeight, clientWidth } = $container
 
   this.containerSize = {
     height: clientHeight,
     width: clientWidth
   }
 
-  const $arena = this.$refs['arena']
   this.draggableOptions.boundingElement = $arena
+  this.draggableOptions.boundingRectMargin = this.boundingRectMargin
 }
 
 const methods = {
   onPositionChange (e, absolutePosition) {
-    const $arena = this.$refs['arena']
+    const { $arena } = this.$refs
 
     if (!$arena || !absolutePosition) return null
 
+    const { boundingRectMargin, scaleFactor } = this
+
+    const { left: x, top: y } = absolutePosition
+
     const boundingRect = $arena.getBoundingClientRect()
 
-    const x = absolutePosition.left - boundingRect.left
-    const y = absolutePosition.top - boundingRect.top
+    const dx = boundingRect.left + boundingRectMargin.left
+    const dy = boundingRect.top + boundingRectMargin.top
 
-    const scaled = scaledToFactor(1 / this.scaleFactor)
+    const scaled = scaledToFactor(1 / scaleFactor)
 
-    const left = scaled(x)
-    const top = scaled(y)
+    const left = scaled(x - dx)
+    const top = scaled(y - dy)
 
     const position = { left, top }
     const size = this.selectionSize
@@ -172,7 +159,6 @@ const methods = {
 const watch = {
   model ({ position, size }) {
     this.$emit('update', { position, size })
-    // console.log(JSON.stringify(x, null, 2))
   }
 }
 

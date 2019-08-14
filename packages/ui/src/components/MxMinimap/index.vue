@@ -1,10 +1,6 @@
 <template lang="pug">
-  div.container(ref="container")
-    div.wrapper(:style="wrapperStyle")
-
-      div.arena(ref="arena"
-        :style="arenaStyle"
-        )
+  div.container(ref="$container")
+      div.arena(ref="$arena")
         div.highlight(
           :style="highlightStyle"
           v-draggable="draggableOptions"

@@ -15,7 +15,7 @@
 import MxMinimap from '@/components/MxMinimap'
 
 function handleFocusChange (e) {
-  console.log(e)
+  console.log(JSON.stringify(e, null, 2))
 }
 
 export default {
