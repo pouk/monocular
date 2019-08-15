@@ -1,6 +1,7 @@
 <template lang="pug">
-div.container(ref="$container")
+div.container(ref="boundingElement")
   div.selection(
+    v-if="draggableOptions"
     :style="selectionStyle"
     v-draggable="draggableOptions"
     )

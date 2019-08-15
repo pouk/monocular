@@ -34,19 +34,9 @@ const props = {
 }
 
 function data () {
-  const model = {
-    position: null,
-    size: null
-  }
-
-  const draggableOptions = {
-    onPositionChange: this.onPositionChange
-  }
-
   return {
-    model,
-    containerSize: null,
-    draggableOptions
+    draggableOptions: null,
+    containerSize: null
   }
 }
 
@@ -95,6 +85,28 @@ const computed = {
 
     return boundsFrom(dx, dy)
   },
+  initialPosition () {
+    const { containerSize, selectionSize } = this
+
+    if (!containerSize) {
+      return {
+        top: 0,
+        left: 0
+      }
+    }
+
+    const { boundingElement } = this.$refs
+
+    const { x, y } = originOfElement(boundingElement)
+
+    const dx = (containerSize.width - selectionSize.width) / 2
+    const dy = (containerSize.height - selectionSize.height) / 2
+
+    return {
+      left: x + dx,
+      top: y + dy
+    }
+  },
   viewportSize () {
     const { originalSize, zoomLevel } = this
 
@@ -132,15 +144,26 @@ const computed = {
 }
 
 function mounted () {
-  const { $container } = this.$refs
+  const { boundingElement } = this.$refs
 
-  this.containerSize = sizeOfElement($container)
+  this.containerSize = sizeOfElement(boundingElement)
 
-  this.draggableOptions.boundingElement = $container
-  this.draggableOptions.boundingRectMargin = this.boundingRectMargin
+  this.setupDraggable()
 }
 
 const methods = {
+  setupDraggable () {
+    const { boundingElement } = this.$refs
+
+    const { boundingRectMargin, onPositionChange, initialPosition } = this
+
+    this.draggableOptions = {
+      boundingElement,
+      boundingRectMargin,
+      initialPosition,
+      onPositionChange
+    }
+  },
   onPositionChange (e, absolutePosition) {
     if (!absolutePosition) return null
 
@@ -148,9 +171,9 @@ const methods = {
 
     const { boundingRectMargin, scaleFactor } = this
 
-    const { $container } = this.$refs
+    const { boundingElement } = this.$refs
 
-    const boundingRect = originOfElement($container)
+    const boundingRect = originOfElement(boundingElement)
 
     const dx = boundingRect.x + boundingRectMargin.left
     const dy = boundingRect.y + boundingRectMargin.top
@@ -163,12 +186,6 @@ const methods = {
     const position = { left, top }
     const size = this.viewportSize
 
-    this.model = { position, size }
-  }
-}
-
-const watch = {
-  model ({ position, size }) {
     this.$emit('update', { position, size })
   }
 }
@@ -178,7 +195,6 @@ export default {
   props,
   data,
   computed,
-  watch,
   methods,
   directives: {
     Draggable

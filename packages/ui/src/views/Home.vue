@@ -31,6 +31,9 @@ export default {
 
 <style>
 #minimap-wrapper {
+  position: absolute;
+  bottom: 50px;
+  right: 50px;
   width: 400px;
   height: 400px;
 }
