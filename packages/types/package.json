@@ -1,0 +1,25 @@
+{
+  "name": "@monocular/types",
+  "version": "0.0.0",
+  "description": "Fundamental data structures",
+  "author": "Mushegh Antaranyan <mushegh.antaranyan@gmail.com>",
+  "homepage": "https://github.com/pouk/monocular/tree/master/packages/types#readme",
+  "license": "MIT",
+  "main": "index.js",
+  "files": [
+    "src"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pouk/monocular.git"
+  },
+  "scripts": {
+    "test": "ava"
+  },
+  "bugs": {
+    "url": "https://github.com/pouk/monocular/issues"
+  },
+  "devDependencies": {
+    "ava": "^2.2.0"
+  }
+}
