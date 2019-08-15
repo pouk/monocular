@@ -1,10 +1,10 @@
 <template lang="pug">
-  div.container(ref="$container")
-      div.arena(ref="$arena")
-        div.highlight(
-          :style="highlightStyle"
-          v-draggable="draggableOptions"
-          )
+  div.container
+    mx-input-viewport(
+      :original-size="originalSize"
+      :zoom-level="1"
+      @update="onViewportUpdate"
+      )
 </template>
 
 <script src="./main.js"></script>
