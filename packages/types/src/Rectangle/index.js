@@ -1,0 +1,12 @@
+module.exports = require('./Rectangle')
+
+module.exports.create = require('./create')
+module.exports.createBase = require('./createBase')
+module.exports.baseFrom = require('./baseFrom')
+module.exports.equals = require('./equals')
+module.exports.isSimilar = require('./isSimilar')
+module.exports.translate = require('./translate')
+module.exports.translateTo = require('./translateTo')
+module.exports.translateCenterTo = require('./translateCenterTo')
+module.exports.scale = require('./scale')
+module.exports.scaleFromCenter = require('./scaleFromCenter')

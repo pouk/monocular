@@ -35,7 +35,6 @@ test('Rectangle', t => {
   // constructor
 
   t.true(Rectangle(origin, width, height) instanceof Rectangle)
-  t.true(Rectangle.from({ origin, width, height }) instanceof Rectangle)
 
   t.throws(() => Rectangle(origin, width), TypeError, 'no less args')
   t.throws(() => Rectangle(origin, width, height, 1), TypeError, 'no more args')
