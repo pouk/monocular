@@ -51,82 +51,91 @@ test('is(rect)', t => {
 })
 
 test('equals(r1, r2)', t => {
-  const o1 = Point(2, 1)
-  const o2 = Point(1, 2)
+  const rect = Rectangle.createBase(4, 3)
+
+  // class
 
   t.true(
-    Rectangle.equals(
-      Rectangle(o1, 4, 3),
-      Rectangle(o1, 4, 3)
-    ),
+    Rectangle.equals(rect, Rectangle.createBase(4, 3)),
     'same origin, same size > equal'
   )
 
   t.false(
-    Rectangle.equals(
-      Rectangle(o1, 4, 3),
-      Rectangle(o2, 4, 3)
-    ),
+    Rectangle.equals(rect, Rectangle(Point(1, 1), 4, 3)),
     'different origin, same size > not equal'
   )
 
   t.false(
-    Rectangle.equals(
-      Rectangle(o1, 4, 3),
-      Rectangle(o1, 3, 4),
-      'same origin, different size > not equal'
-    )
+    Rectangle.equals(rect, Rectangle.createBase(3, 4)),
+    'same origin, different size > not equal'
   )
+
+  // instance
+
+  t.true(Rectangle.createBase(4, 3).equals(rect))
+  t.false(Rectangle.createBase(4, 2).equals(rect))
 })
 
 test('isSimilar(r1, r2)', t => {
-  const origin = Point(2, 1)
+  const Base = Rectangle.createBase
 
-  t.true(
-    Rectangle.isSimilar(
-      Rectangle(origin, 4, 3),
-      Rectangle(origin, 4, 3)
-    )
-  )
+  // class
 
-  t.true(
-    Rectangle.isSimilar(
-      Rectangle(origin, 4.5, 3.5),
-      Rectangle(origin, 2.25, 1.75)
-    )
-  )
+  t.true(Rectangle.isSimilar(Base(4, 3), Base(4, 3)))
 
-  t.false(
-    Rectangle.equals(
-      Rectangle(origin, 3, 4),
-      Rectangle(origin, 4, 7),
-      'same origin, different size > not equal'
-    )
-  )
+  t.true(Rectangle.isSimilar(Base(4, 3), Base(2, 1.5)))
+
+  t.false(Rectangle.isSimilar(Base(4, 3), Base(5, 7)))
+
+  // instance
+
+  t.true(Base(4, 3).isSimilar(Base(8, 6)))
 })
 
 test('translate(x, y, rect)', t => {
   const r1 = Rectangle(Point(1, 1), 2, 2)
   const r2 = Rectangle.translate(2, 3, r1)
 
+  // class
+
   t.not(r1, r2, 'no mutate')
   t.deepEqual(r2, Rectangle(Point(3, 4), 2, 2))
+
+  // instance
+
+  t.deepEqual(r1.translate(2, 3), r2)
 })
 
 test('translateTo(point, rect)', t => {
-  const r1 = Rectangle(Point(1, 1), 2, 2)
-  const r2 = Rectangle.translateTo(Point(2, 2), r1)
+  const o = Point(1, 1)
+
+  const r1 = Rectangle.createBase(2, 2)
+  const r2 = Rectangle.translateTo(o, r1)
+
+  // class
 
   t.not(r1, r2, 'no mutate')
-  t.deepEqual(r2, Rectangle(Point(2, 2), 2, 2))
+  t.deepEqual(r2, Rectangle(o, 2, 2))
+
+  // instance
+
+  t.deepEqual(r1.translateTo(o), r2)
 })
 
 test('translateCenterTo(point, rect)', t => {
-  const r1 = Rectangle(Point(1, 1), 2, 2)
-  const r2 = Rectangle.translateCenterTo(Point(3, 3), r1)
+  const o = Point(3, 3)
+
+  const r1 = Rectangle.createBase(2, 2)
+  const r2 = Rectangle.translateCenterTo(o, r1)
+
+  // class
 
   t.not(r1, r2, 'no mutate')
   t.deepEqual(r2, Rectangle(Point(2, 2), 2, 2))
+
+  // instance
+
+  t.deepEqual(r1.translateCenterTo(o), r2)
 })
 
 test('scale(n, rect)', t => {
@@ -135,22 +144,40 @@ test('scale(n, rect)', t => {
   const r1 = Rectangle(origin, 2, 2)
   const r2 = Rectangle.scale(2, r1)
 
+  // class
+
   t.not(r1, r2, 'no mutate')
   t.deepEqual(r2, Rectangle(origin, 4, 4))
+
+  // instance
+
+  t.deepEqual(r1.scale(2), r2)
 })
 
 test('scaleFromCenter(n, rect)', t => {
   const r1 = Rectangle(Point(1, 1), 2, 2)
   const r2 = Rectangle.scaleFromCenter(2, r1)
 
+  // class
+
   t.not(r1, r2, 'no mutate')
   t.deepEqual(r2, Rectangle(Point(0, 0), 4, 4))
+
+  // instance
+
+  t.deepEqual(r1.scaleFromCenter(2), r2)
 })
 
 test('scaleFromBase(n, rect)', t => {
   const r1 = Rectangle(Point(1, 1), 2, 2)
   const r2 = Rectangle.scaleFromBase(2, r1)
 
+  // class
+
   t.not(r1, r2, 'no mutate')
   t.deepEqual(r2, Rectangle(Point(2, 2), 4, 4))
+
+  // prototype
+
+  t.deepEqual(r1.scaleFromBase(2), r2)
 })
