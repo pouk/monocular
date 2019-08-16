@@ -10,8 +10,9 @@ test('Point', t => {
 
   // constructor
 
-  t.true(Point(x, y) instanceof Point)
-  t.true(Point.from({ x, y }) instanceof Point, 'factory')
+  t.true(Point(x, y) instanceof Point, 'constructor')
+
+  // arguments
 
   t.throws(() => Point(x), TypeError, 'no less args')
   t.throws(() => Point(x, y, 1), TypeError, 'no more args')
@@ -20,8 +21,8 @@ test('Point', t => {
 
   const p = Point(x, y)
 
-  t.is(p.x, x, 'point.x')
-  t.is(p.y, y, 'point.y')
+  t.is(p.x, x, 'arg 1 -> x')
+  t.is(p.y, y, 'arg 2 -> y')
 })
 
 test('Rectangle', t => {
