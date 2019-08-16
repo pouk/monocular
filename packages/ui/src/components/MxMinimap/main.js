@@ -1,3 +1,5 @@
+import { Rectangle } from '@monocular/types'
+
 import MxInputViewport from './input-viewport.vue'
 
 // helpers
@@ -10,23 +12,21 @@ const props = {
 }
 
 function data () {
-  const model = {
-    position: null,
-    size: null
-  }
-
   const draggableOptions = {
     onPositionChange: this.onPositionChange
   }
 
   return {
-    model,
     containerSize: null,
     draggableOptions
   }
 }
 
-const computed = { }
+const computed = {
+  model () {
+    return Rectangle.baseFrom(this.originalSize)
+  }
+}
 
 function mounted () { }
 

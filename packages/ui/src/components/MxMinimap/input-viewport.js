@@ -1,144 +1,65 @@
+import { Point, Rectangle } from '@monocular/types'
+
 import { Draggable } from 'draggable-vue-directive'
 
 // helpers
-const scaledToFactor = scaleFactor => value =>
-  value * scaleFactor
-
-const scaledToZoomLevel = level => value => {
-  const scaled = scaledToFactor(1 / Math.pow(2, level))
-  return scaled(value)
-}
-
-const sizeOfElement = el => {
-  const { clientHeight, clientWidth } = el
-
-  return {
-    height: clientHeight,
-    width: clientWidth
-  }
-}
 
 const originOfElement = el => {
   const { x, y } = el.getBoundingClientRect()
-  return { x, y }
+  return Point.create(x, y)
 }
 
-//
+const rectFromElement = el => {
+  const origin = originOfElement(el)
+  const { clientHeight, clientWidth } = el
+
+  return Rectangle.create(origin, clientWidth, clientHeight)
+}
 
 const props = {
-  originalSize: Object,
-  zoomLevel: {
+  model: Rectangle,
+  zoomFactor: {
     type: Number,
-    default: 0
+    default: 1
   }
 }
 
 function data () {
   return {
     draggableOptions: null,
-    containerSize: null
+    container: null
   }
 }
 
 const computed = {
   scaleFactor () {
-    const { originalSize, containerSize } = this
+    const { model, container } = this
 
-    if (!containerSize) {
-      return 0
-    }
-
-    const xFactor = containerSize.width / originalSize.width
-    const yFactor = containerSize.height / originalSize.height
+    const xFactor = container.width / model.width
+    const yFactor = container.height / model.height
 
     return Math.min(xFactor, yFactor)
   },
-  arenaSize () {
-    const { originalSize, scaleFactor } = this
+  arena () {
+    const { model, container, scaleFactor } = this
 
-    const width = originalSize.width * scaleFactor
-    const height = originalSize.height * scaleFactor
-
-    return {
-      width,
-      height
-    }
+    return Rectangle
+      .scale(scaleFactor, model)
+      .alignCenterWith(container)
   },
-  boundingRectMargin () {
-    const { containerSize, arenaSize } = this
+  selection () {
+    const { model, zoomFactor, scaleFactor } = this
 
-    const boundsFrom = (dx, dy) => {
-      return {
-        left: dx,
-        top: dy,
-        right: dx,
-        bottom: dy
-      }
-    }
-
-    if (!containerSize) {
-      return boundsFrom(0, 0)
-    }
-
-    const dx = (containerSize.width - arenaSize.width) / 2
-    const dy = (containerSize.height - arenaSize.height) / 2
-
-    return boundsFrom(dx, dy)
-  },
-  initialPosition () {
-    const { containerSize, selectionSize } = this
-
-    if (!containerSize) {
-      return {
-        top: 0,
-        left: 0
-      }
-    }
-
-    const { boundingElement } = this.$refs
-
-    const { x, y } = originOfElement(boundingElement)
-
-    const dx = (containerSize.width - selectionSize.width) / 2
-    const dy = (containerSize.height - selectionSize.height) / 2
-
-    return {
-      left: x + dx,
-      top: y + dy
-    }
-  },
-  viewportSize () {
-    const { originalSize, zoomLevel } = this
-
-    const scaled = scaledToZoomLevel(zoomLevel)
-
-    const width = scaled(originalSize.width)
-    const height = scaled(originalSize.height)
-
-    return {
-      width,
-      height
-    }
-  },
-  selectionSize () {
-    const { viewportSize, scaleFactor } = this
-
-    const scaled = scaledToFactor(scaleFactor)
-
-    const width = scaled(viewportSize.width)
-    const height = scaled(viewportSize.height)
-
-    return {
-      width,
-      height
-    }
+    return model
+      .scale(1 / zoomFactor) // real viewport
+      .scale(scaleFactor) // minimap scale
   },
   selectionStyle () {
-    const { selectionSize } = this
+    const { selection } = this
 
     return {
-      width: `${selectionSize.width}px`,
-      height: `${selectionSize.height}px`
+      width: `${selection.width}px`,
+      height: `${selection.height}px`
     }
   }
 }
@@ -146,47 +67,53 @@ const computed = {
 function mounted () {
   const { boundingElement } = this.$refs
 
-  this.containerSize = sizeOfElement(boundingElement)
+  this.container = rectFromElement(boundingElement)
 
   this.setupDraggable()
 }
 
 const methods = {
   setupDraggable () {
+    const { container, arena, selection } = this
     const { boundingElement } = this.$refs
 
-    const { boundingRectMargin, onPositionChange, initialPosition } = this
+    const { x, y } = selection
+      .alignCenterWith(container)
+      .getOrigin()
+    const initialPosition = {
+      left: x,
+      top: y
+    }
+
+    const dx = (container.width - arena.width) / 2
+    const dy = (container.height - arena.height) / 2
+    const boundingRectMargin = {
+      left: dx,
+      top: dy,
+      right: dx,
+      bottom: dy
+    }
 
     this.draggableOptions = {
       boundingElement,
       boundingRectMargin,
       initialPosition,
-      onPositionChange
+      onPositionChange: this.onDrag
     }
   },
-  onPositionChange (e, absolutePosition) {
+  onDrag (e, absolutePosition) {
     if (!absolutePosition) return null
 
-    const { left: x, top: y } = absolutePosition
+    const { arena, selection, scaleFactor } = this
 
-    const { boundingRectMargin, scaleFactor } = this
+    const { left, top } = absolutePosition
+    const { x, y } = arena.getOrigin()
 
-    const { boundingElement } = this.$refs
+    const target = selection
+      .translate(left - x, top - y)
+      .scaleFromBase(1 / scaleFactor)
 
-    const boundingRect = originOfElement(boundingElement)
-
-    const dx = boundingRect.x + boundingRectMargin.left
-    const dy = boundingRect.y + boundingRectMargin.top
-
-    const scaled = scaledToFactor(1 / scaleFactor)
-
-    const left = scaled(x - dx)
-    const top = scaled(y - dy)
-
-    const position = { left, top }
-    const size = this.viewportSize
-
-    this.$emit('update', { position, size })
+    this.$emit('update', target)
   }
 }
 

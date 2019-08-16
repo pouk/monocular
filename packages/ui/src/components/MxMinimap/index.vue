@@ -1,8 +1,8 @@
 <template lang="pug">
   div.container
     mx-input-viewport(
-      :original-size="originalSize"
-      :zoom-level="1"
+      :model="model"
+      :zoom-factor="2"
       @update="onViewportUpdate"
       )
 </template>
