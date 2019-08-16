@@ -11,6 +11,9 @@ const translateCenterTo = require('./translateCenterTo')
 const scale = require('./scale')
 const scaleFromCenter = require('./scaleFromCenter')
 const scaleFromBase = require('./scaleFromBase')
+const centerOf = require('./centerOf')
+const alignCenterWith = require('./alignCenterWith')
+const originOf = require('./originOf')
 
 Object.assign(Rectangle, {
   create,
@@ -23,7 +26,10 @@ Object.assign(Rectangle, {
   translateCenterTo,
   scale,
   scaleFromCenter,
-  scaleFromBase
+  scaleFromBase,
+  centerOf,
+  alignCenterWith,
+  originOf
 })
 
 // extend prototype
@@ -58,6 +64,18 @@ Rectangle.prototype.scaleFromCenter = function (n) {
 
 Rectangle.prototype.scaleFromBase = function (n) {
   return scaleFromBase(n, this)
+}
+
+Rectangle.prototype.getCenter = function () {
+  return centerOf(this)
+}
+
+Rectangle.prototype.alignCenterWith = function (rect) {
+  return alignCenterWith(rect, this)
+}
+
+Rectangle.prototype.getOrigin = function () {
+  return originOf(this)
 }
 
 // expose type class

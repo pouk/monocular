@@ -181,3 +181,42 @@ test('scaleFromBase(n, rect)', t => {
 
   t.deepEqual(r1.scaleFromBase(2), r2)
 })
+
+test('centerOf(rect)', t => {
+  const rect = Rectangle.createBase(2, 4)
+
+  // class
+  t.deepEqual(Rectangle.centerOf(rect), Point(1, 2))
+
+  // instance
+
+  t.deepEqual(rect.getCenter(), Point(1, 2))
+})
+
+test('alignCenterWith(rect)', t => {
+  const r1 = Rectangle.createBase(2, 4)
+  const r2 = Rectangle.createBase(6, 6)
+
+  // class
+  t.deepEqual(
+    Rectangle.alignCenterWith(r2, r1),
+    Rectangle.translateCenterTo(Point(3, 3), r1)
+  )
+
+  // instance
+
+  t.deepEqual(r1.alignCenterWith(r2).getCenter(), Point(3, 3))
+})
+
+test('originOf(rect)', t => {
+  const origin = Point(0, 0)
+  const rect = Rectangle.createBase(2, 4)
+
+  // class
+
+  t.deepEqual(Rectangle.originOf(rect), origin)
+
+  // instance
+
+  t.deepEqual(rect.getOrigin(), origin)
+})
