@@ -146,3 +146,11 @@ test('scaleFromCenter(n, rect)', t => {
   t.not(r1, r2, 'no mutate')
   t.deepEqual(r2, Rectangle(Point(0, 0), 4, 4))
 })
+
+test('scaleFromBase(n, rect)', t => {
+  const r1 = Rectangle(Point(1, 1), 2, 2)
+  const r2 = Rectangle.scaleFromBase(2, r1)
+
+  t.not(r1, r2, 'no mutate')
+  t.deepEqual(r2, Rectangle(Point(2, 2), 4, 4))
+})
