@@ -9,7 +9,8 @@
     "test:unit": "vue-cli-service test:unit"
   },
   "dependencies": {
-    "core-js": "^2.6.5",
+    "@monocular/types": "*",
+    "core-js": "^2.6.9",
     "draggable-vue-directive": "^2.0.6",
     "vue": "^2.6.10",
     "vue-router": "^3.0.3",
