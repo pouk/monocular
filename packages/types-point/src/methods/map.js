@@ -1,4 +1,4 @@
-const Point = require('./Point')
+const create = require('./create')
 
 /**
  * Derive new point transforming coordinates by given function
@@ -10,7 +10,7 @@ const Point = require('./Point')
  */
 
 function map (f, p) {
-  return Point(f(p.x), f(p.y))
+  return create(f(p.x), f(p.y))
 }
 
 module.exports = map

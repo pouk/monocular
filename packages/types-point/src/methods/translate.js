@@ -1,4 +1,4 @@
-const Point = require('./Point')
+const create = require('./create')
 
 /**
  * Translate point
@@ -10,7 +10,7 @@ const Point = require('./Point')
  */
 
 function translate (dx, dy, p) {
-  return Point(p.x + dx, p.y + dy)
+  return create(p.x + dx, p.y + dy)
 }
 
 module.exports = translate

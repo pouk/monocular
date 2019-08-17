@@ -1,9 +1,9 @@
 {
-  "name": "@monocular/types",
+  "name": "@monocular/types-point",
   "version": "0.0.0",
-  "description": "Fundamental data structures",
+  "description": "Type for a point",
   "author": "Mushegh Antaranyan <mushegh.antaranyan@gmail.com>",
-  "homepage": "https://github.com/pouk/monocular/tree/master/packages/types#readme",
+  "homepage": "https://github.com/pouk/monocular/tree/master/packages/types-point#readme",
   "license": "MIT",
   "main": "index.js",
   "files": [
@@ -30,7 +30,6 @@
     "eslint-plugin-standard": "^4.0.0"
   },
   "dependencies": {
-    "@monocular/types-point": "*",
     "daggy": "^1.4.0"
   }
 }

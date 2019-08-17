@@ -1,6 +1,6 @@
 import test from 'ava'
 
-import { Point } from '..'
+import Point from '..'
 
 test('.create(x, y)', t => {
   t.deepEqual(
