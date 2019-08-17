@@ -1,6 +1,8 @@
 import test from 'ava'
 
-import { Point, Rectangle } from '..'
+import Point from '@monocular/types-point'
+
+import Rectangle from '..'
 
 test('create(origin, width, height)', t => {
   const origin = Point(2, 1)

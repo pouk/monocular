@@ -1,11 +1,16 @@
 # `types`
 
-Data structures for fundamental types
+Index of type classes for common data structures
+
+- `Point`
+- `Rectangle`
 
 ## Usage
 
-```
-const types = require('types')
+```js
+const { Point } = require('@monocular/types')
 
-// TODO: DEMONSTRATE API
+const origin = Point(2, 3)
+
+console.log(origin.x, origin.y) // > 2, 3
 ```

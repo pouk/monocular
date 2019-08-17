@@ -1,9 +1,9 @@
 {
-  "name": "@monocular/types",
+  "name": "@monocular/types-rectangle",
   "version": "0.0.0",
-  "description": "Fundamental data structures",
+  "description": "Type for a Rectangle",
   "author": "Mushegh Antaranyan <mushegh.antaranyan@gmail.com>",
-  "homepage": "https://github.com/pouk/monocular/tree/master/packages/types#readme",
+  "homepage": "https://github.com/pouk/monocular/tree/master/packages/types-rectangle#readme",
   "license": "MIT",
   "main": "index.js",
   "files": [
@@ -31,6 +31,6 @@
   },
   "dependencies": {
     "@monocular/types-point": "*",
-    "@monocular/types-rectangle": "*"
+    "daggy": "^1.4.0"
   }
 }
