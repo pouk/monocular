@@ -1,22 +1,17 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 
-import HomePage from './views/Home'
-import AboutPage from './views/About'
+import MonocularView from './views/Monocular'
 
 Vue.use(Router)
 
 export default new Router({
   routes: [
     {
-      path: '/',
-      name: 'home',
-      component: HomePage
-    },
-    {
-      path: '/about',
-      name: 'about',
-      component: AboutPage
+      path: '/:imageFileName',
+      name: 'MonocularView',
+      component: MonocularView,
+      props: true
     }
   ]
 })
