@@ -5,7 +5,6 @@
         :original-size="size"
         :source="source"
         :selected-layout="selectedLayout"
-        :zoom-factor="2"
       )
     div#minimap-wrapper
       mx-minimap(

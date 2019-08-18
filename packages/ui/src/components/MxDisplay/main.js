@@ -29,11 +29,7 @@ const scaleFactorToFitInto = (box, rect) => {
 const props = {
   source: String,
   originalSize: Object,
-  selectedLayout: Rectangle,
-  zoomFactor: {
-    type: Number,
-    default: 1
-  }
+  selectedLayout: Rectangle
 }
 
 const data = () => {
@@ -62,25 +58,23 @@ const computed = {
       .scale(displayScaleFactor)
       .alignCenterWith(containerLayout)
   },
-  imageScaleFactor () {
-    const { displayScaleFactor, zoomFactor } = this
-
-    return displayScaleFactor * zoomFactor
-  },
   imageLayout () {
-    const { selectedLayout, originalLayout, imageScaleFactor } = this
+    const { selectedLayout, originalLayout, displayScaleFactor } = this
 
     if (!selectedLayout) return void 0
 
+    const zoomFactor = scaleFactorToFitInto(originalLayout, selectedLayout)
+    const scaleFactor = displayScaleFactor * zoomFactor
+
     const layout = selectedLayout
-      .scaleFromBase(imageScaleFactor)
+      .scaleFromBase(scaleFactor)
 
     const origin = layout.origin
       .map(l => -l)
 
     return originalLayout
       .translateTo(origin)
-      .scale(imageScaleFactor)
+      .scale(scaleFactor)
   },
   clampStyle () {
     const { displayLayout } = this
