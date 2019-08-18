@@ -2,7 +2,7 @@
   div.container(ref="containerElement")
     mx-display(
       v-if="isReady"
-      :image-source="source"
+      :image-source="imageSource"
       :original-layout="originalLayout"
       :selected-layout="selectedLayout"
       :bbox="bbox"

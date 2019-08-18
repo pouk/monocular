@@ -2,14 +2,18 @@
   div#app.box
     nav#nav.row.row-header
       div
-        router-link(to="/") Home
-      div
-        router-link(to="/about") About
+        router-link(to="/the-fight.jpg") "The Fight ..."
     router-view.row.row-content
     footer.row.row-footer
 </template>
 
 <style>
+html,
+body {
+  height: 100%;
+  margin: 0
+}
+
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -29,12 +33,6 @@
 
 #nav a.router-link-exact-active {
   color: #42b983;
-}
-
-html,
-body {
-  height: 100%;
-  margin: 0
 }
 
 .box {
