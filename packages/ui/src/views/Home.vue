@@ -36,7 +36,7 @@ const data = () => {
   return {
     source,
     size,
-    selectedLayout: null
+    selectedLayout: void 0
   }
 }
 
