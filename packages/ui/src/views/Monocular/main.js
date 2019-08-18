@@ -1,3 +1,5 @@
+import { Rectangle } from '@monocular/types'
+
 import MxMinimap from '@/components/MxMinimap'
 import MxDisplay from '@/components/MxDisplay'
 
@@ -18,6 +20,7 @@ const data = () => {
 
   return {
     size,
+    originalLayout: Rectangle.createBase(4800, 3466),
     selectedLayout: void 0
   }
 }

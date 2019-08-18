@@ -18,12 +18,12 @@ const layoutOfElement = el => {
 // specs
 
 const props = {
-  source: String,
-  originalSize: Object,
+  imageSource: String,
+  originalLayout: Rectangle,
   selectedLayout: {
     type: Rectangle,
     default () {
-      return Rectangle.baseFrom(this.originalSize)
+      return this.originalLayout
     }
   }
 }
@@ -37,9 +37,6 @@ const data = () => {
 const computed = {
   isReady () {
     return !!this.bbox
-  },
-  originalLayout () {
-    return Rectangle.baseFrom(this.originalSize)
   }
 }
 

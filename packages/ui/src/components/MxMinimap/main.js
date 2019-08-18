@@ -1,13 +1,9 @@
-import { Rectangle } from '@monocular/types'
-
 import MxInputViewport from './input-viewport.vue'
 
 // helpers
 
-//
-
 const props = {
-  originalSize: Object,
+  originalLayout: Object,
   zoomLevel: Number
 }
 
@@ -19,12 +15,6 @@ function data () {
   return {
     containerSize: null,
     draggableOptions
-  }
-}
-
-const computed = {
-  model () {
-    return Rectangle.baseFrom(this.originalSize)
   }
 }
 
@@ -40,7 +30,6 @@ export default {
   name: 'MxMinimap',
   props,
   data,
-  computed,
   methods,
   components: {
     MxInputViewport

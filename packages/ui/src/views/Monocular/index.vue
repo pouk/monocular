@@ -3,13 +3,14 @@
     div#display-wrapper
       mx-display(
         :original-size="size"
-        :source="imageSource"
+        :image-source="imageSource"
+        :original-layout="originalLayout"
         :selected-layout="selectedLayout"
       )
     div#minimap-wrapper
       mx-minimap(
         @update="handleFocusChange"
-        :original-size="size"
+        :original-layout="originalLayout"
         :scale-factor="1 / 5"
         :zoom-level="1"
       )
