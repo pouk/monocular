@@ -26,6 +26,7 @@ main {
 #display-wrapper {
   width: 100%;
   height: 100%;
+  opacity: 0.35;
 }
 
 #minimap-wrapper {
@@ -34,5 +35,6 @@ main {
   right: 50px;
   width: 400px;
   height: 400px;
+  background-color: rgba(255, 255, 255, 0.5);
 }
 </style>
