@@ -1,33 +1,6 @@
 import { Point, Rectangle } from '@monocular/types'
 
-// helpers
-
-const clamp = (min, max) => n => {
-  return Math.min(max, Math.max(min, n))
-}
-
-const positionOfElement = el => {
-  const { x, y } = el.getBoundingClientRect()
-  return Point.create(x, y)
-}
-
-const cssPositionOfRect = rect => {
-  const { x, y } = rect.origin
-
-  return {
-    top: `${y}px`,
-    left: `${x}px`
-  }
-}
-
-const cssSizeOfRect = rect => {
-  const { width, height } = rect
-
-  return {
-    width: `${width}px`,
-    height: `${height}px`
-  }
-}
+import * as H from './helpers'
 
 // specs
 
@@ -37,43 +10,44 @@ const props = {
 }
 
 function data () {
-  const displayScale = void 0
-
   return {
-    displayScale
+    displayScale: void 0
   }
 }
 
 const computed = {
-  displayShape () {
-    const { originalShape, displayScale } = this
-
-    if (!displayScale) return void 0
-
-    const { displayElement } = this.$refs
-    const origin = positionOfElement(displayElement)
-
-    return originalShape
-      .scale(displayScale)
-      .translateTo(origin)
+  // readable alias
+  markerShape () {
+    return this.value
   },
-  markerRegion () {
-    const { value, displayScale } = this
-    return value.scaleFromBase(displayScale)
+  getBoundedOriginFrom () {
+    const { originalShape, markerShape } = this
+
+    const rangeX = originalShape.width - markerShape.width
+    const rangeY = originalShape.height - markerShape.height
+
+    return point => {
+      const x = Math.max(0, Math.min(rangeX, point.x))
+      const y = Math.max(0, Math.min(rangeY, point.y))
+
+      return Point.create(x, y)
+    }
   },
   displayStyles () {
-    const { displayShape } = this
+    const { originalShape, displayScale } = this
 
-    if (!displayShape) return void 0
+    const displayShape = originalShape.scale(displayScale)
 
-    return cssSizeOfRect(displayShape)
+    return H.cssSizeOfRect(displayShape)
   },
   markerStyles () {
-    const { markerRegion } = this
+    const { markerShape, displayScale } = this
+
+    const markerRegion = markerShape.scaleFromBase(displayScale)
 
     return [
-      cssPositionOfRect(markerRegion),
-      cssSizeOfRect(markerRegion)
+      H.cssPositionOfRect(markerRegion),
+      H.cssSizeOfRect(markerRegion)
     ]
   }
 }
@@ -90,56 +64,33 @@ const methods = {
     const { originalShape } = this
     const { displayElement } = this.$refs
 
-    const displayWidth = displayElement.clientWidth
-
-    this.displayScale = displayWidth / originalShape.width
+    this.displayScale = displayElement.clientWidth / originalShape.width
   },
   onDragStart (e) {
-    const { markerElement } = this.$refs
+    const { markerElement, displayElement } = this.$refs
 
-    const { clientX: x, clientY: y } = e
-
-    const targetOrigin = positionOfElement(markerElement)
-
-    const { x: dx, y: dy } = targetOrigin.translate(-x, -y)
+    const { x, y } = H.relativePointTo(displayElement, markerElement)
+    const dx = x - e.clientX
+    const dy = y - e.clientY
 
     const onMouseMove = e => {
-      const { clientX, clientY } = e
-
       const point = Point
-        .create(clientX, clientY)
+        .create(e.clientX, e.clientY)
         .translate(dx, dy)
 
       this.onDrag(point)
     }
 
-    const onMouseUp = e => {
-      window.removeEventListener('mousemove', onMouseMove)
-      window.removeEventListener('mouseup', onMouseUp)
-    }
-
-    window.addEventListener('mousemove', onMouseMove)
-    window.addEventListener('mouseup', onMouseUp)
+    H.onMouseMoveGlobal(onMouseMove)
   },
-  onDrag (e) {
-    const { displayShape, displayScale, value, originalShape } = this
+  onDrag (point) {
+    const { displayScale, markerShape } = this
 
-    const point = displayShape.origin
-      .map(n => -n)
-      .translate(e.x, e.y)
-      .map(n => n / displayScale)
+    const position = point.map(n => n / displayScale)
+    const origin = this.getBoundedOriginFrom(position)
 
-    const { x: xMin, y: yMin } = originalShape.origin
-    const { x: xMax, y: yMax } = originalShape.origin
-      .translate(originalShape.width, originalShape.height)
-      .translate(-value.width, -value.height)
-
-    const clampedX = clamp(xMin, xMax)
-    const clampedY = clamp(yMin, yMax)
-
-    const origin = Point.create(clampedX(point.x), clampedY(point.y))
-
-    this.$emit('input', value.translateTo(origin))
+    const nextValue = markerShape.translateTo(origin)
+    this.$emit('input', nextValue)
   }
 }
 
