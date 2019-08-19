@@ -1,6 +1,6 @@
 import { Rectangle } from '@monocular/types'
 
-import MxMinimap from '@/components/MxMinimap-next'
+import MxMinimap from '@/components/MxMinimap'
 import MxDisplay from '@/components/MxDisplay'
 
 function handleFocusChange (e) {
