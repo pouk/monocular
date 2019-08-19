@@ -32,8 +32,7 @@ const cssSizeOfRect = rect => {
 // specs
 
 const props = {
-  imageSource: String,
-  imageShape: Rectangle,
+  originalShape: Rectangle,
   value: Rectangle
 }
 
@@ -47,25 +46,34 @@ function data () {
 
 const computed = {
   displayShape () {
-    const { imageShape, displayScale } = this
+    const { originalShape, displayScale } = this
+
+    if (!displayScale) return void 0
 
     const { displayElement } = this.$refs
     const origin = positionOfElement(displayElement)
 
-    return imageShape
+    return originalShape
       .scale(displayScale)
       .translateTo(origin)
   },
-  inputArea () {
+  markerRegion () {
     const { value, displayScale } = this
     return value.scaleFromBase(displayScale)
   },
-  inputAreaStyles () {
-    const { inputArea } = this
+  displayStyles () {
+    const { displayShape } = this
+
+    if (!displayShape) return void 0
+
+    return cssSizeOfRect(displayShape)
+  },
+  markerStyles () {
+    const { markerRegion } = this
 
     return [
-      cssPositionOfRect(inputArea),
-      cssSizeOfRect(inputArea)
+      cssPositionOfRect(markerRegion),
+      cssSizeOfRect(markerRegion)
     ]
   }
 }
@@ -79,18 +87,19 @@ function mounted () {
 
 const methods = {
   resetLayout (e) {
-    const { imageShape } = this
+    const { originalShape } = this
     const { displayElement } = this.$refs
 
     const displayWidth = displayElement.clientWidth
-    this.displayScale = displayWidth / imageShape.width
+
+    this.displayScale = displayWidth / originalShape.width
   },
   onDragStart (e) {
-    const { inputElement } = this.$refs
+    const { markerElement } = this.$refs
 
     const { clientX: x, clientY: y } = e
 
-    const targetOrigin = positionOfElement(inputElement)
+    const targetOrigin = positionOfElement(markerElement)
 
     const { x: dx, y: dy } = targetOrigin.translate(-x, -y)
 
@@ -113,16 +122,16 @@ const methods = {
     window.addEventListener('mouseup', onMouseUp)
   },
   onDrag (e) {
-    const { displayShape, displayScale, value, imageShape } = this
+    const { displayShape, displayScale, value, originalShape } = this
 
     const point = displayShape.origin
       .map(n => -n)
       .translate(e.x, e.y)
       .map(n => n / displayScale)
 
-    const { x: xMin, y: yMin } = imageShape.origin
-    const { x: xMax, y: yMax } = imageShape.origin
-      .translate(imageShape.width, imageShape.height)
+    const { x: xMin, y: yMin } = originalShape.origin
+    const { x: xMax, y: yMax } = originalShape.origin
+      .translate(originalShape.width, originalShape.height)
       .translate(-value.width, -value.height)
 
     const clampedX = clamp(xMin, xMax)

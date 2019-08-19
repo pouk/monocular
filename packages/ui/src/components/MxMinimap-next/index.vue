@@ -1,11 +1,17 @@
 <template lang="pug">
-div.display(ref="displayElement")
-  div.focus(
-    ref="inputElement"
+div.display(
+  ref="displayElement"
+  :style="displayStyles"
+)
+
+  figure
+    slot
+
+  div.marker(
+    ref="markerElement"
+    :style="markerStyles"
     @mousedown="onDragStart"
-    :style="inputAreaStyles"
-    )
-  img(:src="imageSource")
+  )
 </template>
 
 <script src="./main.js"></script>
@@ -13,15 +19,20 @@ div.display(ref="displayElement")
 <style scoped>
 div.display {
   position: relative;
+  overflow: hidden;
 }
 
-div.focus {
+div.marker {
   position: absolute;
   background: rgba(255,255,255,0.3)
 }
 
-img {
-  max-width: 100%;
+figure {
+  margin: 0;
+}
+
+figure > * {
   max-height: 100%;
+  max-width: 100%;
 }
 </style>

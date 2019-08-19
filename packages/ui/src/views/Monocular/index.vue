@@ -5,14 +5,15 @@ div.container
       :original-size="size"
       :image-source="imageSource"
       :original-layout="originalLayout"
-      :selected-layout="selectedLayout"
-    )
+      :selected-layout="selectedLayout")
+
   aside#control-panel
+
     mx-minimap(
       v-model="focusArea"
-      :image-shape="imageShape"
-      :image-source="imageSource"
+      :original-shape="imageShape"
     )
+      img(:src="imageSource")
 </template>
 
 <script src="./main.js"></script>
