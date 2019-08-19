@@ -18,12 +18,28 @@ const data = () => {
     height: 3466
   }
 
+  const originalLayout = Rectangle.createBase(4800, 3466)
+
+  // -
+
+  const imageShape = originalLayout
+
+  const initialZoomFactor = 2
+  const focusArea = imageShape.scale(1 / initialZoomFactor)
+
+  // -
+
   return {
     size,
-    originalLayout: Rectangle.createBase(4800, 3466),
-    selectedLayout: void 0
+    originalLayout,
+    selectedLayout: void 0,
+    //
+    imageShape,
+    focusArea
   }
 }
+
+// highlight the selection
 
 const computed = {
   imageSource () {

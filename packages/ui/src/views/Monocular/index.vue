@@ -1,38 +1,45 @@
 <template lang="pug">
-  main
-    div#display-wrapper
-      mx-display(
-        :original-size="size"
-        :image-source="imageSource"
-        :original-layout="originalLayout"
-        :selected-layout="selectedLayout"
-      )
-    div#minimap-wrapper
-      mx-minimap(
-        @update="handleFocusChange"
-        :original-layout="originalLayout"
-        :scale-factor="1 / 5"
-        :zoom-level="1"
-      )
+div.container
+  main#display-wrapper
+    mx-display(
+      :original-size="size"
+      :image-source="imageSource"
+      :original-layout="originalLayout"
+      :selected-layout="selectedLayout")
+
+  aside#control-panel
+
+    mx-minimap(
+      v-model="focusArea"
+      :original-shape="imageShape"
+    )
+      img(:src="imageSource")
 </template>
 
 <script src="./main.js"></script>
 
 <style>
+.container {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+}
+
 main {
   height: 100%;
 }
 
 #display-wrapper {
-  width: 100%;
+  width: 50%;
   height: 100%;
+  float: left;
+  opacity: 0.35;
 }
 
-#minimap-wrapper {
-  position: absolute;
-  bottom: 50px;
-  right: 50px;
-  width: 400px;
-  height: 400px;
+#control-panel {
+  width: 50%;
+  float: left;
+  background-color: rgba(255, 255, 255, 0.5);
+  outline: 3px solid green;
 }
 </style>
