@@ -14,7 +14,7 @@
     "url": "git+https://github.com/pouk/monocular.git"
   },
   "scripts": {
-    "lint": "eslint src/**/*.js test/**/*.js",
+    "lint": "eslint index.js src/**/*.js test/**/*.js",
     "lint:staged": "lint-staged",
     "test": "ava"
   },
