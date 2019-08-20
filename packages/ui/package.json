@@ -6,6 +6,7 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
+    "lint:staged": "lint-staged",
     "test:unit": "vue-cli-service test:unit"
   },
   "dependencies": {
@@ -30,6 +31,7 @@
     "css-modules-require-hook": "^4.2.3",
     "eslint": "^5.16.0",
     "eslint-plugin-vue": "^5.0.0",
+    "lint-staged": "^9.2.3",
     "require-extension-hooks": "^0.3.3",
     "require-extension-hooks-babel": "^1.0.0",
     "require-extension-hooks-vue": "^3.0.0",
