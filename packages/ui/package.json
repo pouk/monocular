@@ -7,6 +7,8 @@
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
     "lint:staged": "lint-staged",
+    "storybook:build": "vue-cli-service storybook:build -c config/storybook",
+    "storybook:serve": "vue-cli-service storybook:serve -p 6006 -c config/storybook -s ./public",
     "test:unit": "vue-cli-service test:unit"
   },
   "dependencies": {
@@ -19,6 +21,10 @@
   },
   "devDependencies": {
     "@dnlup/vue-cli-plugin-unit-ava": "^1.0.0-beta.7",
+    "@storybook/addon-actions": "^4.1.0 || ^5.0.0",
+    "@storybook/addon-knobs": "^4.1.0 || ^5.0.0",
+    "@storybook/addon-links": "^4.1.0 || ^5.0.0",
+    "@storybook/addon-notes": "^4.1.0 || ^5.0.0",
     "@vue/cli-plugin-babel": "^3.10.0",
     "@vue/cli-plugin-eslint": "^3.10.0",
     "@vue/cli-service": "^3.10.0",
@@ -36,6 +42,7 @@
     "require-extension-hooks-babel": "^1.0.0",
     "require-extension-hooks-vue": "^3.0.0",
     "vue-cli-plugin-pug": "^1.0.7",
+    "vue-cli-plugin-storybook": "^0.6.1",
     "vue-template-compiler": "^2.6.10"
   }
 }
