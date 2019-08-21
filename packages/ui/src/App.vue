@@ -1,10 +1,6 @@
 <template lang="pug">
-  div#app.box
-    nav#nav.row.row-header
-      div
-        router-link(to="/the-fight.jpg") "The Fight ..."
-    router-view.row.row-content
-    footer.row.row-footer
+  div#document
+    mx-main-view
 </template>
 
 <style>
@@ -14,51 +10,24 @@ body {
   margin: 0
 }
 
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
-
-#nav {
-  padding: 30px;
-}
-
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-#nav a.router-link-exact-active {
-  color: #42b983;
-}
-
-.box {
+#document {
   display: flex;
-  flex-flow: column;
-  height: 100%;
+  flex-direction: column;
+  min-height: 100%;
 }
 
-.box .row {
-  outline: 1px dotted grey;
-}
-
-.box .row.row-header {
-  flex: 0 1 auto;
-  /* The above is shorthand for:
-  flex-grow: 0,
-  flex-shrink: 1,
-  flex-basis: auto
-  */
-}
-
-.box .row.row-content {
-  flex: 1 1 auto;
-}
-
-.box .row.row-footer {
-  flex: 0 1 40px;
+#app {
+  outline: 1px dotted #ddd;
 }
 </style>
+
+<script>
+import MxMainView from '@/views/MxMain'
+
+export default {
+  name: 'MxApp',
+  components: {
+    MxMainView
+  }
+}
+</script>

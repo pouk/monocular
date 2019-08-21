@@ -1,14 +1,14 @@
 <template lang="pug">
-div.container
-  main#display-wrapper
+el-container
+
+  el-main
     mx-display(
       :original-size="size"
       :image-source="imageSource"
       :original-layout="originalLayout"
       :selected-layout="selectedLayout")
 
-  aside#control-panel
-
+  el-aside
     mx-minimap(
       v-model="focusArea"
       :original-shape="imageShape"
@@ -19,14 +19,10 @@ div.container
 <script src="./main.js"></script>
 
 <style>
-.container {
+.display-fit {
   height: 100%;
   width: 100%;
   margin: 0;
-}
-
-main {
-  height: 100%;
 }
 
 #display-wrapper {

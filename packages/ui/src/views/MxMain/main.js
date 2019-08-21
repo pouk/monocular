@@ -8,11 +8,9 @@ function handleFocusChange (e) {
   console.log(JSON.stringify(e, null, 2))
 }
 
-const props = {
-  imageFileName: String
-}
-
 const data = () => {
+  const imageSource = '/images/the-fight.jpg'
+
   const size = {
     width: 4800,
     height: 3466
@@ -34,25 +32,15 @@ const data = () => {
     originalLayout,
     selectedLayout: void 0,
     //
+    imageSource,
     imageShape,
     focusArea
   }
 }
 
-// highlight the selection
-
-const computed = {
-  imageSource () {
-    const { imageFileName } = this
-    return `/images/${imageFileName}`
-  }
-}
-
 export default {
-  name: 'MonocularView',
-  props,
+  name: 'MxMainView',
   data,
-  computed,
   methods: {
     handleFocusChange
   },
