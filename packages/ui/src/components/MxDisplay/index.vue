@@ -3,8 +3,8 @@
     mx-display(
       v-if="isReady"
       :image-source="imageSource"
-      :original-layout="originalLayout"
-      :selected-layout="selectedLayout"
+      :original-shape="originalShape"
+      :selected-shape="selectedShape"
       :bbox="bbox"
       )
 </template>

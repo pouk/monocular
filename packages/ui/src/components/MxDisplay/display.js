@@ -13,45 +13,45 @@ const scaleFactorToFitInto = (box, rect) => {
 
 const props = {
   bbox: Rectangle,
-  originalLayout: Rectangle,
-  selectedLayout: Rectangle,
+  originalShape: Rectangle,
+  selectedShape: Rectangle,
   imageSource: String
 }
 
 const computed = {
   displayScaleFactor () {
-    const { originalLayout, bbox } = this
+    const { originalShape, bbox } = this
 
     if (!bbox) return void 0
 
-    return scaleFactorToFitInto(bbox, originalLayout)
+    return scaleFactorToFitInto(bbox, originalShape)
   },
-  displayLayout () {
-    const { originalLayout, displayScaleFactor } = this
+  displayShape () {
+    const { originalShape, displayScaleFactor } = this
 
     if (!displayScaleFactor) return void 0
 
-    return originalLayout.scale(displayScaleFactor)
+    return originalShape.scale(displayScaleFactor)
   },
-  imageLayout () {
-    const { selectedLayout, originalLayout, displayScaleFactor } = this
+  imageShape () {
+    const { selectedShape, originalShape, displayScaleFactor } = this
 
-    if (!selectedLayout) return void 0
+    if (!selectedShape) return void 0
 
-    const zoomFactor = scaleFactorToFitInto(originalLayout, selectedLayout)
+    const zoomFactor = scaleFactorToFitInto(originalShape, selectedShape)
     const scaleFactor = displayScaleFactor * zoomFactor
 
-    const layout = selectedLayout.scaleFromBase(scaleFactor)
-    const origin = layout.origin.map(l => -l)
+    const shape = selectedShape.scaleFromBase(scaleFactor)
+    const origin = shape.origin.map(l => -l)
 
-    return originalLayout
+    return originalShape
       .translateTo(origin)
       .scale(scaleFactor)
   },
   displayStyle () {
-    const { displayLayout } = this
+    const { displayShape } = this
 
-    const { width, height } = displayLayout
+    const { width, height } = displayShape
 
     return {
       width: `${width}px`,
@@ -59,10 +59,10 @@ const computed = {
     }
   },
   imageStyle () {
-    const { imageLayout } = this
+    const { imageShape } = this
 
-    const { width, height } = imageLayout
-    const { x, y } = imageLayout.origin
+    const { width, height } = imageShape
+    const { x, y } = imageShape.origin
 
     return {
       left: `${x}px`,

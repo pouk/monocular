@@ -1,49 +1,72 @@
 import { Rectangle } from '@monocular/types'
 
 import MxMinimap from '@/components/MxMinimap'
-import MxDisplay from '@/components/MxDisplay'
+import MxDisplay from '@/components/MxDisplay-next'
 
-function handleFocusChange (e) {
-  this.selectedLayout = e
-  console.log(JSON.stringify(e, null, 2))
+// helpers
+
+const aspectRatioOf = rect => {
+  const { width, height } = rect
+
+  return width / height
 }
+
+// specs
 
 const data = () => {
   const imageSource = '/images/the-fight.jpg'
-
-  const size = {
-    width: 4800,
-    height: 3466
-  }
-
-  const originalLayout = Rectangle.createBase(4800, 3466)
-
-  // -
-
-  const imageShape = originalLayout
-
-  const initialZoomFactor = 2
-  const focusArea = imageShape.scale(1 / initialZoomFactor)
-
-  // -
+  const imageShape = Rectangle.createBase(4800, 3466)
 
   return {
-    size,
-    originalLayout,
-    selectedLayout: void 0,
+    displayShape: void 0,
+    focusArea: void 0,
+    zoomFactor: void 0,
     //
     imageSource,
-    imageShape,
-    focusArea
+    imageShape
+  }
+}
+
+const computed = {
+  imageAspectRatio () {
+    const { imageShape } = this
+
+    return aspectRatioOf(imageShape)
+  },
+  displayAspectRatio () {
+    const { displayShape } = this
+
+    if (!displayShape) return void 0
+
+    return aspectRatioOf(displayShape)
+  }
+}
+
+const watch = {
+  displayShape () {
+    const { imageShape, displayShape } = this
+
+    const imageARC = aspectRatioOf(imageShape)
+    const displayARC = aspectRatioOf(displayShape)
+
+    this.zoomFactor = imageARC < displayARC
+      ? imageShape.width / displayShape.width
+      : imageShape.height / displayShape.height
+  },
+  zoomFactor () {
+    const { displayShape, imageShape, zoomFactor } = this
+
+    this.focusArea = displayShape
+      .scale(zoomFactor)
+      .alignCenterWith(imageShape)
   }
 }
 
 export default {
   name: 'MxMainView',
   data,
-  methods: {
-    handleFocusChange
-  },
+  computed,
+  watch,
   components: {
     MxMinimap,
     MxDisplay

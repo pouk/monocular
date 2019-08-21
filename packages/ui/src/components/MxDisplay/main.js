@@ -19,11 +19,11 @@ const layoutOfElement = el => {
 
 const props = {
   imageSource: String,
-  originalLayout: Rectangle,
-  selectedLayout: {
+  originalShape: Rectangle,
+  selectedShape: {
     type: Rectangle,
     default () {
-      return this.originalLayout
+      return this.originalShape
     }
   }
 }
