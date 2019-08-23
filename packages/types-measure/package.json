@@ -1,0 +1,37 @@
+{
+  "name": "@monocular/types-measure",
+  "version": "0.0.0",
+  "description": "Sum type for various (signed) measurements",
+  "author": "Mushegh Antaranyan <mushegh.antaranyan@gmail.com>",
+  "homepage": "https://github.com/pouk/monocular/tree/master/packages/types-measure#readme",
+  "license": "MIT",
+  "main": "index.js",
+  "files": [
+    "src"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pouk/monocular.git"
+  },
+  "scripts": {
+    "lint": "eslint index.js src/**/*.js test/**/*.js",
+    "lint:staged": "lint-staged",
+    "test": "ava"
+  },
+  "bugs": {
+    "url": "https://github.com/pouk/monocular/issues"
+  },
+  "devDependencies": {
+    "ava": "^2.2.0",
+    "eslint": "^6.1.0",
+    "eslint-config-standard": "^13.0.1",
+    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-node": "^9.1.0",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-standard": "^4.0.0",
+    "lint-staged": "^9.2.3"
+  },
+  "dependencies": {
+    "daggy": "^1.4.0"
+  }
+}
