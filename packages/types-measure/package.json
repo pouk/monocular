@@ -1,9 +1,9 @@
 {
-  "name": "@monocular/types-distance",
+  "name": "@monocular/types-measure",
   "version": "0.0.0",
-  "description": "Sum type for signed distance for 1- and 2- dimensions",
+  "description": "Sum type for various (signed) measurements",
   "author": "Mushegh Antaranyan <mushegh.antaranyan@gmail.com>",
-  "homepage": "https://github.com/pouk/monocular/tree/master/packages/types-distance#readme",
+  "homepage": "https://github.com/pouk/monocular/tree/master/packages/types-measure#readme",
   "license": "MIT",
   "main": "index.js",
   "files": [
