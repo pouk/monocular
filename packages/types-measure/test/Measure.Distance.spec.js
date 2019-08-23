@@ -44,3 +44,24 @@ test('empty', t => {
 
   t.deepEqual(empty(), Distance(0))
 })
+
+test('invert', t => {
+  const { invert } = Distance
+
+  t.deepEqual(invert(Distance(0)), Distance(0))
+  t.deepEqual(invert(Distance(1)), Distance(-1))
+})
+
+test('scale', t => {
+  const { scale } = Distance
+
+  t.deepEqual(scale(2, Distance(1)), Distance(2))
+})
+
+test('reduce', t => {
+  const { reduce } = Distance
+
+  const sum = (a, b) => a + b
+
+  t.deepEqual(reduce(sum, 0, Distance(1)), 1)
+})

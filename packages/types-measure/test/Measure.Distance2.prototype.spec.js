@@ -14,3 +14,17 @@ test('map', t => {
 test('concat', t => {
   t.deepEqual(Distance2(1, 2).concat(Distance2(2, 3)), Distance2(3, 5))
 })
+
+test('invert', t => {
+  t.deepEqual(Distance2(1, 2).invert(), Distance2(-1, -2))
+})
+
+test('scale', t => {
+  t.deepEqual(Distance2(1, 2).scale(2), Distance2(2, 4))
+})
+
+test('reduce', t => {
+  const sum = (a, b) => a + b
+
+  t.deepEqual(Distance2(1, 2).reduce(sum, 0), 3)
+})
