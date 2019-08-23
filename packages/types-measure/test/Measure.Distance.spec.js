@@ -11,6 +11,12 @@ test('create', t => {
   t.throws(() => create(1, 2))
 })
 
+test('from', t => {
+  const { from } = Distance
+
+  t.deepEqual(from({ x: 1 }), Distance(1))
+})
+
 test('is', t => {
   const { is } = Distance
 
