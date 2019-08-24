@@ -1,7 +1,7 @@
 const R = require('ramda')
 
-const scale = require('./scale')
-const alignCenterWith = require('./alignCenterWith')
+const scaleFrom = require('./scaleFrom')
+const centerOf = require('./centerOf')
 
 /**
  * Scale rectangle by given coefficient from center
@@ -13,8 +13,9 @@ const alignCenterWith = require('./alignCenterWith')
  */
 
 function scaleFromCenter (k, rect) {
-  const r1 = scale(k, rect)
-  return alignCenterWith(rect, r1)
+  const center = centerOf(rect)
+
+  return scaleFrom(center, k, rect)
 }
 
 module.exports = R.curry(scaleFromCenter)

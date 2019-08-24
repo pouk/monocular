@@ -6,8 +6,8 @@ const create = require('./create')
 
 const origin = Point.create(0, 0)
 
-function createBase (size) {
+function createFromOrigin (size) {
   return create(origin, size)
 }
 
-module.exports = R.curry(createBase)
+module.exports = R.curry(createFromOrigin)
