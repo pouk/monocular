@@ -1,3 +1,5 @@
+const R = require('ramda')
+
 const translateTo = require('./translateTo')
 
 /**
@@ -10,11 +12,13 @@ const translateTo = require('./translateTo')
  */
 
 function translateCenterTo (point, rect) {
-  const dx = rect.width / 2
-  const dy = rect.height / 2
-  const origin = point.translate(-dx, -dy)
+  const delta = rect.size
+    .scale(1 / 2)
+    .invert()
 
-  return translateTo(origin, rect)
+  const position = point.translateBy(delta)
+
+  return translateTo(position, rect)
 }
 
-module.exports = translateCenterTo
+module.exports = R.curry(translateCenterTo)

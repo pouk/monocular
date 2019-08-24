@@ -1,17 +1,18 @@
+const R = require('ramda')
+
 const Rectangle = require('../Rectangle')
 
 /**
  * Create a `Rectangle` instance
  *
- * @param {Point} origin
- * @param {Number} width
- * @param {Number} height
+ * @param {Point} position
+ * @param {Measure.Distance2} size
  *
- * @returns {Point}
+ * @returns {Rectangle}
  */
 
-function create (origin, width, height) {
-  return Rectangle(origin, width, height)
+function create (position, size) {
+  return Rectangle(position, size)
 }
 
-module.exports = create
+module.exports = R.curry(create)

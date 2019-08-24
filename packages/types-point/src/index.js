@@ -16,6 +16,18 @@ Point.prototype.translate = function (dx, dy) {
   return methods.translate(dx, dy, this)
 }
 
+Point.prototype.translateBy = function (delta) {
+  return methods.translateBy(delta, this)
+}
+
+Point.prototype.distanceTo = function (point) {
+  return methods.distanceTo(point, this)
+}
+
+Point.prototype.distanceFrom = function (point) {
+  return methods.distanceFrom(point, this)
+}
+
 // Export constructor with assigned static methods
 
 module.exports = Object.assign(Point, methods)

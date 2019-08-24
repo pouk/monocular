@@ -1,224 +1,232 @@
 import test from 'ava'
 
 import Point from '@monocular/types-point'
+import { Distance2 } from '@monocular/types-measure'
 
 import Rectangle from '..'
 
-test('create(origin, width, height)', t => {
-  const origin = Point(2, 1)
+test('create', t => {
+  const position = Point(2, 1)
+  const size = Distance2(3, 4)
 
   t.deepEqual(
-    Rectangle.create(origin, 4, 3),
-    Rectangle(origin, 4, 3)
+    Rectangle.create(position, size),
+    Rectangle(position, size)
   )
 })
 
-test('createBase(width, height)', t => {
+test('createSpread', t => {
+  const { createSpread } = Rectangle
+
   t.deepEqual(
-    Rectangle.createBase(4, 3),
-    Rectangle(Point(0, 0), 4, 3)
+    createSpread(2, 3, 6, 8),
+    Rectangle(Point(2, 3), Distance2(6, 8))
   )
 })
 
-test('from({ origin, width, height })', t => {
-  const origin = Point(2, 1)
-  const width = 4
-  const height = 3
+test('createFromOrigin', t => {
+  const size = Distance2(3, 4)
 
   t.deepEqual(
-    Rectangle.from({ origin, width, height }),
-    Rectangle(origin, width, height)
+    Rectangle.createFromOrigin(size),
+    Rectangle(Point(0, 0), size)
   )
 })
 
-test('baseFrom({ width, height })', t => {
-  const width = 4
-  const height = 3
+test('from', t => {
+  const position = Point(2, 1)
+  const size = Distance2(3, 4)
 
   t.deepEqual(
-    Rectangle.baseFrom({ width, height }),
-    Rectangle(Point(0, 0), width, height)
+    Rectangle.from({ position, size }),
+    Rectangle(position, size)
   )
 })
 
-test('is(rect)', t => {
-  const origin = Point(2, 1)
-  const width = 4
-  const height = 3
+test('is', t => {
+  const position = Point(2, 1)
+  const size = Distance2(3, 4)
 
-  const rect = Rectangle(origin, width, height)
-
-  t.true(Rectangle.is(rect))
-  t.false(Rectangle.is({ origin, width, height }))
+  t.true(Rectangle.is(Rectangle(position, size)))
+  t.false(Rectangle.is({ position, size }))
 })
 
-test('equals(r1, r2)', t => {
-  const rect = Rectangle.createBase(4, 3)
+test('equals', t => {
+  const position1 = Point(1, 1)
+  const position2 = Point(2, 1)
 
-  // class
+  const size1 = Distance2(3, 4)
+  const size2 = Distance2(4, 4)
 
   t.true(
-    Rectangle.equals(rect, Rectangle.createBase(4, 3)),
-    'same origin, same size > equal'
+    Rectangle.equals(
+      Rectangle(position1, size1),
+      Rectangle(position1, size1)
+    ),
+    'same position, same size -> equal'
   )
 
   t.false(
-    Rectangle.equals(rect, Rectangle(Point(1, 1), 4, 3)),
-    'different origin, same size > not equal'
+    Rectangle.equals(
+      Rectangle(position1, size1),
+      Rectangle(position1, size2)
+    ),
+    'different position, same size -> not equal'
   )
 
   t.false(
-    Rectangle.equals(rect, Rectangle.createBase(3, 4)),
-    'same origin, different size > not equal'
+    Rectangle.equals(
+      Rectangle(position1, size1),
+      Rectangle(position2, size1)
+    ),
+    'same position, different size -> not equal'
   )
-
-  // instance
-
-  t.true(Rectangle.createBase(4, 3).equals(rect))
-  t.false(Rectangle.createBase(4, 2).equals(rect))
 })
 
-test('isSimilar(r1, r2)', t => {
-  const Base = Rectangle.createBase
+test('bimap', t => {
+  const { bimap } = Rectangle
 
-  // class
+  const f = position => position.map(n => n + 2)
+  const g = size => size.scale(2)
 
-  t.true(Rectangle.isSimilar(Base(4, 3), Base(4, 3)))
-
-  t.true(Rectangle.isSimilar(Base(4, 3), Base(2, 1.5)))
-
-  t.false(Rectangle.isSimilar(Base(4, 3), Base(5, 7)))
-
-  // instance
-
-  t.true(Base(4, 3).isSimilar(Base(8, 6)))
-})
-
-test('translate(x, y, rect)', t => {
-  const r1 = Rectangle(Point(1, 1), 2, 2)
-  const r2 = Rectangle.translate(2, 3, r1)
-
-  // class
-
-  t.not(r1, r2, 'no mutate')
-  t.deepEqual(r2, Rectangle(Point(3, 4), 2, 2))
-
-  // instance
-
-  t.deepEqual(r1.translate(2, 3), r2)
-})
-
-test('translateTo(point, rect)', t => {
-  const o = Point(1, 1)
-
-  const r1 = Rectangle.createBase(2, 2)
-  const r2 = Rectangle.translateTo(o, r1)
-
-  // class
-
-  t.not(r1, r2, 'no mutate')
-  t.deepEqual(r2, Rectangle(o, 2, 2))
-
-  // instance
-
-  t.deepEqual(r1.translateTo(o), r2)
-})
-
-test('translateCenterTo(point, rect)', t => {
-  const o = Point(3, 3)
-
-  const r1 = Rectangle.createBase(2, 2)
-  const r2 = Rectangle.translateCenterTo(o, r1)
-
-  // class
-
-  t.not(r1, r2, 'no mutate')
-  t.deepEqual(r2, Rectangle(Point(2, 2), 2, 2))
-
-  // instance
-
-  t.deepEqual(r1.translateCenterTo(o), r2)
-})
-
-test('scale(n, rect)', t => {
-  const origin = Point(1, 1)
-
-  const r1 = Rectangle(origin, 2, 2)
-  const r2 = Rectangle.scale(2, r1)
-
-  // class
-
-  t.not(r1, r2, 'no mutate')
-  t.deepEqual(r2, Rectangle(origin, 4, 4))
-
-  // instance
-
-  t.deepEqual(r1.scale(2), r2)
-})
-
-test('scaleFromCenter(n, rect)', t => {
-  const r1 = Rectangle(Point(1, 1), 2, 2)
-  const r2 = Rectangle.scaleFromCenter(2, r1)
-
-  // class
-
-  t.not(r1, r2, 'no mutate')
-  t.deepEqual(r2, Rectangle(Point(0, 0), 4, 4))
-
-  // instance
-
-  t.deepEqual(r1.scaleFromCenter(2), r2)
-})
-
-test('scaleFromBase(n, rect)', t => {
-  const r1 = Rectangle(Point(1, 1), 2, 2)
-  const r2 = Rectangle.scaleFromBase(2, r1)
-
-  // class
-
-  t.not(r1, r2, 'no mutate')
-  t.deepEqual(r2, Rectangle(Point(2, 2), 4, 4))
-
-  // prototype
-
-  t.deepEqual(r1.scaleFromBase(2), r2)
-})
-
-test('centerOf(rect)', t => {
-  const rect = Rectangle.createBase(2, 4)
-
-  // class
-  t.deepEqual(Rectangle.centerOf(rect), Point(1, 2))
-
-  // instance
-
-  t.deepEqual(rect.getCenter(), Point(1, 2))
-})
-
-test('alignCenterWith(rect)', t => {
-  const r1 = Rectangle.createBase(2, 4)
-  const r2 = Rectangle.createBase(6, 6)
-
-  // class
   t.deepEqual(
-    Rectangle.alignCenterWith(r2, r1),
-    Rectangle.translateCenterTo(Point(3, 3), r1)
+    bimap(f, g, Rectangle(Point(1, 1), Distance2(2, 2))),
+    Rectangle(Point(3, 3), Distance2(4, 4))
   )
-
-  // instance
-
-  t.deepEqual(r1.alignCenterWith(r2).getCenter(), Point(3, 3))
 })
 
-test('originOf(rect)', t => {
-  const origin = Point(0, 0)
-  const rect = Rectangle.createBase(2, 4)
+test('translate', t => {
+  const position1 = Point(1, 1)
+  const size = Distance2(1, 1)
 
-  // class
+  const rect1 = Rectangle(position1, size)
+  const rect2 = Rectangle.translate(2, 3, rect1)
 
-  t.deepEqual(Rectangle.originOf(rect), origin)
+  t.not(rect1, rect2, 'no mutate')
+  t.deepEqual(rect2.position, Point(3, 4))
+})
 
-  // instance
+test('translateBy', t => {
+  const { translateBy } = Rectangle
 
-  t.deepEqual(rect.getOrigin(), origin)
+  const size = Distance2(1, 1)
+
+  t.deepEqual(
+    translateBy(Distance2(2, 3), Rectangle(Point(1, 1), size)),
+    Rectangle(Point(3, 4), size)
+  )
+})
+
+test('translateTo', t => {
+  const { translateTo } = Rectangle
+
+  const size = Distance2(2, 2)
+
+  t.deepEqual(
+    translateTo(Point(2, 3), Rectangle(Point(1, 1), size)),
+    Rectangle(Point(2, 3), size)
+  )
+})
+
+test('translateCenterTo', t => {
+  const { translateCenterTo } = Rectangle
+
+  const size = Distance2(2, 2)
+
+  // curried
+  const translated = translateCenterTo(Point(3, 3))
+
+  t.deepEqual(
+    translated(Rectangle(Point(0, 0), size)),
+    Rectangle(Point(2, 2), size)
+  )
+})
+
+test('scale', t => {
+  const { scale } = Rectangle
+
+  t.deepEqual(
+    scale(2, Rectangle(Point(1, 1), Distance2(2, 3))),
+    Rectangle(Point(1, 1), Distance2(4, 6))
+  )
+})
+
+test('scaleFrom', t => {
+  const { scaleFrom } = Rectangle
+
+  const rect = Rectangle(Point(3, 3), Distance2(3, 3))
+
+  t.deepEqual(
+    scaleFrom(Point(4, 4), 3, rect),
+    Rectangle(Point(1, 1), Distance2(9, 9))
+  )
+})
+
+test('scaleFromCenter', t => {
+  const { scaleFromCenter } = Rectangle
+
+  t.deepEqual(
+    scaleFromCenter(2, Rectangle(Point(1, 1), Distance2(2, 2))),
+    Rectangle(Point(0, 0), Distance2(4, 4))
+  )
+})
+
+test('scaleFromOrigin', t => {
+  const { scaleFromOrigin } = Rectangle
+
+  t.deepEqual(
+    scaleFromOrigin(2, Rectangle(Point(1, 1), Distance2(2, 2))),
+    Rectangle(Point(2, 2), Distance2(4, 4))
+  )
+})
+
+test('alignCenterWith', t => {
+  const { alignCenterWith } = Rectangle
+
+  const rect1 = Rectangle(Point(1, 1), Distance2(2, 4))
+  const rect2 = Rectangle(Point(2, 2), Distance2(6, 6))
+
+  t.deepEqual(
+    alignCenterWith(rect2, rect1),
+    Rectangle(Point(4, 3), Distance2(2, 4))
+  )
+})
+
+test('positionOf', t => {
+  const { positionOf } = Rectangle
+
+  t.deepEqual(
+    positionOf(Rectangle(Point(1, 1), Distance2(1, 1))),
+    Point(1, 1)
+  )
+})
+
+test('centerOf', t => {
+  const { centerOf } = Rectangle
+
+  t.deepEqual(
+    centerOf(Rectangle(Point(1, 2), Distance2(2, 2))),
+    Point(2, 3)
+  )
+})
+
+test('sizeOf', t => {
+  const { sizeOf } = Rectangle
+
+  t.deepEqual(
+    sizeOf(Rectangle(Point(1, 1), Distance2(2, 3))),
+    Distance2(2, 3)
+  )
+})
+
+test('widthOf', t => {
+  const { widthOf } = Rectangle
+
+  t.is(widthOf(Rectangle(Point(1, 1), Distance2(2, 3))), 2)
+})
+
+test('heightOf', t => {
+  const { heightOf } = Rectangle
+
+  t.is(heightOf(Rectangle(Point(1, 1), Distance2(2, 3))), 3)
 })

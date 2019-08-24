@@ -32,6 +32,7 @@
     "lint-staged": "^9.2.3"
   },
   "dependencies": {
+    "@monocular/types-measure": "*",
     "@monocular/types-point": "*",
     "@monocular/types-rectangle": "*"
   }

@@ -1,3 +1,5 @@
+const R = require('ramda')
+
 /**
  * Compare points for equality
  *
@@ -11,4 +13,4 @@ function equals (p, q) {
   return p.x === q.x && p.y === q.y
 }
 
-module.exports = equals
+module.exports = R.curry(equals)

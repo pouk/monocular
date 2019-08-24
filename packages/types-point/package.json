@@ -32,6 +32,8 @@
     "lint-staged": "^9.2.3"
   },
   "dependencies": {
-    "daggy": "^1.4.0"
+    "@monocular/types-measure": "*",
+    "daggy": "^1.4.0",
+    "ramda": "^0.26.1"
   }
 }

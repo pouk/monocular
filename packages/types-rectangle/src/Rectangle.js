@@ -1,6 +1,6 @@
 const Daggy = require('daggy')
 
-const Rectangle = Daggy.tagged('Rectangle', ['origin', 'width', 'height'])
+const Rectangle = Daggy.tagged('Rectangle', ['position', 'size'])
 
 //
 

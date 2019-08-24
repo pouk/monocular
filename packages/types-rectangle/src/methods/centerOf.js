@@ -1,3 +1,5 @@
+const R = require('ramda')
+
 /**
  * Get center
  *
@@ -7,11 +9,9 @@
  */
 
 function centerOf (rect) {
-  const dx = rect.width / 2
-  const dy = rect.height / 2
+  const { size, position } = rect
 
-  return rect.origin
-    .translate(dx, dy)
+  return position.translateBy(size.scale(1 / 2))
 }
 
-module.exports = centerOf
+module.exports = R.curry(centerOf)

@@ -1,3 +1,5 @@
+const R = require('ramda')
+
 /**
  * Compare rectangles for equality
  *
@@ -8,9 +10,7 @@
  */
 
 function equals (a, b) {
-  return a.origin.equals(b.origin) &&
-    a.width === b.width &&
-    a.height === b.height
+  return a.position.equals(b.position) && a.size.equals(b.size)
 }
 
-module.exports = equals
+module.exports = R.curry(equals)

@@ -1,5 +1,7 @@
+const R = require('ramda')
+
 function reduce (fn, acc, d) {
   return fn(acc, d.x)
 }
 
-module.exports = reduce
+module.exports = R.curry(reduce)

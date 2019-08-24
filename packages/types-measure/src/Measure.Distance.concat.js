@@ -1,3 +1,5 @@
+const R = require('ramda')
+
 const create = require('./Measure.Distance.create')
 
 function concat (d2, d1) {
@@ -5,4 +7,4 @@ function concat (d2, d1) {
   return create(x)
 }
 
-module.exports = concat
+module.exports = R.curry(concat)

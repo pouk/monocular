@@ -1,6 +1,13 @@
 import test from 'ava'
 
-import { Point, Rectangle } from '..'
+import { Measure, Point, Rectangle } from '..'
+
+test('Measure', t => {
+  const { Distance, Distance2 } = Measure
+
+  t.is(typeof Distance, 'function')
+  t.is(typeof Distance2, 'function')
+})
 
 test('Point', t => {
   t.is(typeof Point, 'function')
@@ -26,24 +33,22 @@ test('Point', t => {
 })
 
 test('Rectangle', t => {
-  t.is(typeof Point, 'function')
+  t.is(typeof Rectangle, 'function')
 
-  const origin = Point(2, 1)
-  const width = 4
-  const height = 3
+  const position = Point(2, 1)
+  const size = Measure.Distance2(4, 3)
 
   // constructor
 
-  t.true(Rectangle(origin, width, height) instanceof Rectangle)
+  t.true(Rectangle(position, size) instanceof Rectangle)
 
-  t.throws(() => Rectangle(origin, width), TypeError, 'no less args')
-  t.throws(() => Rectangle(origin, width, height, 1), TypeError, 'no more args')
+  t.throws(() => Rectangle(position), TypeError, 'no less args')
+  t.throws(() => Rectangle(position, 4, 3), TypeError, 'no more args')
 
   // attributes
 
-  const rect = Rectangle(origin, width, height)
+  const rect = Rectangle(position, size)
 
-  t.deepEqual(rect.origin, origin)
-  t.is(rect.width, width)
-  t.is(rect.height, height)
+  t.deepEqual(rect.position, position)
+  t.deepEqual(rect.size, size)
 })

@@ -32,7 +32,9 @@
     "lint-staged": "^9.2.3"
   },
   "dependencies": {
+    "@monocular/types-measure": "*",
     "@monocular/types-point": "*",
-    "daggy": "^1.4.0"
+    "daggy": "^1.4.0",
+    "ramda": "^0.26.1"
   }
 }

@@ -1,16 +1,18 @@
+const R = require('ramda')
+
 const create = require('./create')
 
 /**
  * Translate rectangle to given point
  *
- * @param {Point} p
+ * @param {Point} position
  * @param {Rectangle} rect
  *
  * @returns {Rectangle}
  */
 
-function translateTo (p, rect) {
-  return create(p, rect.width, rect.height)
+function translateTo (position, rect) {
+  return create(position, rect.size)
 }
 
-module.exports = translateTo
+module.exports = R.curry(translateTo)

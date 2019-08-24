@@ -1,3 +1,5 @@
+const R = require('ramda')
+
 const isDistance = require('./Measure.Distance.is')
 
 function equals (d2, d1) {
@@ -8,4 +10,4 @@ function equals (d2, d1) {
   return d1.x === d2.x
 }
 
-module.exports = equals
+module.exports = R.curry(equals)

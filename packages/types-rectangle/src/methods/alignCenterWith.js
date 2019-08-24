@@ -1,3 +1,5 @@
+const R = require('ramda')
+
 const centerOf = require('./centerOf')
 const translateCenterTo = require('./translateCenterTo')
 
@@ -14,4 +16,4 @@ function alignCenterWith (r2, r1) {
   return translateCenterTo(centerOf(r2), r1)
 }
 
-module.exports = alignCenterWith
+module.exports = R.curry(alignCenterWith)
