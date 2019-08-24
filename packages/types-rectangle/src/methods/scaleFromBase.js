@@ -3,18 +3,17 @@ const create = require('./create')
 /**
  * Scale rectangle by given coefficient from (0, 0) point
  *
- * @param {Number} n
+ * @param {Number} k
  * @param {Rectangle} rect
  *
  * @returns {Rectangle}
  */
 
-function scaleFromCenter (n, rect) {
-  const width = rect.width * n
-  const height = rect.height * n
-  const origin = rect.origin.map(l => l * n)
+function scaleFromBase (k, rect) {
+  const position = rect.position.map(l => l * k)
+  const size = rect.size.scale(k)
 
-  return create(origin, width, height)
+  return create(position, size)
 }
 
-module.exports = scaleFromCenter
+module.exports = scaleFromBase

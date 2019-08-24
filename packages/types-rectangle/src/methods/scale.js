@@ -3,15 +3,16 @@ const create = require('./create')
 /**
  * Scale rectangle by given coefficient
  *
- * @param {Number} n
+ * @param {Number} k
  * @param {Rectangle} rect
  *
  * @returns {Rectangle}
  */
 
-function scale (n, rect) {
-  const { origin, width, height } = rect
-  return create(origin, width * n, height * n)
+function scale (k, rect) {
+  const size = rect.size.scale(k)
+
+  return create(rect.position, size)
 }
 
 module.exports = scale

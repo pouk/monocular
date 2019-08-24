@@ -6,11 +6,12 @@ Type class for rectangle
 
 ```
 const Point = require('@monocular/types-point')
+const { Distance2 } = require('@monocular/types-measure')
+
 const Rectangle = require('@monocular/types-rectangle')
 
-const origin = Point(2, 3)
-const width = 4
-const height = 3
+const position = Point(2, 3)
+const size = Distance2(4, 3)
 
-const rect = Rectangle(origin, width, height)
+const rect = Rectangle(position, size)
 ```

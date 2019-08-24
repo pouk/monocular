@@ -10,11 +10,13 @@ const translateTo = require('./translateTo')
  */
 
 function translateCenterTo (point, rect) {
-  const dx = rect.width / 2
-  const dy = rect.height / 2
-  const origin = point.translate(-dx, -dy)
+  const { x: dx, y: dy } = rect.size
+    .invert()
+    .scale(1 / 2)
 
-  return translateTo(origin, rect)
+  const position = point.translate(dx, dy)
+
+  return translateTo(position, rect)
 }
 
 module.exports = translateCenterTo

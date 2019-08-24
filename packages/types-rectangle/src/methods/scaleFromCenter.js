@@ -1,23 +1,18 @@
-const create = require('./create')
+const scale = require('./scale')
+const alignCenterWith = require('./alignCenterWith')
 
 /**
  * Scale rectangle by given coefficient from center
  *
- * @param {Number} n
+ * @param {Number} k
  * @param {Rectangle} rect
  *
  * @returns {Rectangle}
  */
 
-function scaleFromCenter (n, rect) {
-  const width = rect.width * n
-  const height = rect.height * n
-
-  const dx = (rect.width - width) / 2
-  const dy = (rect.height - height) / 2
-  const origin = rect.origin.translate(dx, dy)
-
-  return create(origin, width, height)
+function scaleFromCenter (k, rect) {
+  const r1 = scale(k, rect)
+  return alignCenterWith(rect, r1)
 }
 
 module.exports = scaleFromCenter

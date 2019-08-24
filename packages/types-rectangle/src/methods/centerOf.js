@@ -7,11 +7,11 @@
  */
 
 function centerOf (rect) {
-  const dx = rect.width / 2
-  const dy = rect.height / 2
+  const { size, position } = rect
 
-  return rect.origin
-    .translate(dx, dy)
+  const { x: dx, y: dy } = size.scale(1 / 2)
+
+  return position.translate(dx, dy)
 }
 
 module.exports = centerOf

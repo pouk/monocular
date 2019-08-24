@@ -1,7 +1,7 @@
 const translateTo = require('./translateTo')
 
 /**
- * Translate rectangle by given distances
+ * Translate rectangle position by given distances
  *
  * @param {Number} dx
  * @param {Number} dy
@@ -11,8 +11,10 @@ const translateTo = require('./translateTo')
  */
 
 function translate (dx, dy, rect) {
-  const origin = rect.origin.translate(dx, dy)
-  return translateTo(origin, rect)
+  const position = rect.position
+    .translate(dx, dy)
+
+  return translateTo(position, rect)
 }
 
 module.exports = translate

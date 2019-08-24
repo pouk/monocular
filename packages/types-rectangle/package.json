@@ -33,6 +33,7 @@
   },
   "dependencies": {
     "@monocular/types-point": "*",
+    "@monocular/types-measure": "*",
     "daggy": "^1.4.0"
   }
 }

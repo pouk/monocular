@@ -44,8 +44,8 @@ Rectangle.prototype.alignCenterWith = function (rect) {
   return methods.alignCenterWith(rect, this)
 }
 
-Rectangle.prototype.getOrigin = function () {
-  return methods.originOf(this)
+Rectangle.prototype.getPosition = function () {
+  return methods.positionOf(this)
 }
 
 // expose type class extended w/ static methods

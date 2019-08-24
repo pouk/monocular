@@ -8,8 +8,8 @@
  */
 
 function isSimilar (r1, r2) {
-  const factorX = r1.width / r2.width
-  const factorY = r1.height / r2.height
+  const factorX = r1.size.x / r2.size.x
+  const factorY = r1.size.y / r2.size.y
 
   return factorX === factorY
 }
