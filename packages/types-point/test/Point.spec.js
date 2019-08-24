@@ -1,5 +1,7 @@
 import test from 'ava'
 
+import { Distance2 } from '@monocular/types-measure'
+
 import Point from '..'
 
 test('.create(x, y)', t => {
@@ -61,4 +63,38 @@ test('.translate(dx, dy, p)', t => {
   // instance
 
   t.deepEqual(p.translate(4, 3), q)
+})
+
+test('.translateBy(delta, point)', t => {
+  const p = Point(2, 1)
+  const delta = Distance2(4, 3)
+
+  const q = Point.translateBy(delta, p)
+
+  // class
+
+  t.not(p, q, 'not mutate')
+  t.deepEqual(q, Point(6, 4))
+
+  // instance
+
+  t.deepEqual(p.translateBy(delta), q)
+})
+
+test('.distanceTo(target, point)', t => {
+  const p = Point(2, 1)
+  const q = Point(4, 4)
+
+  const d = Point.distanceTo(q, p)
+
+  t.deepEqual(d, Distance2(2, 3))
+})
+
+test('.distanceFrom(target, point)', t => {
+  const p = Point(2, 1)
+  const q = Point(4, 4)
+
+  const d = Point.distanceFrom(q, p)
+
+  t.deepEqual(d, Distance2(-2, -3))
 })
