@@ -1,6 +1,13 @@
 import test from 'ava'
 
-import { Point, Rectangle } from '..'
+import { Measure, Point, Rectangle } from '..'
+
+test('Measure', t => {
+  const { Distance, Distance2 } = Measure
+
+  t.is(typeof Distance, 'function')
+  t.is(typeof Distance2, 'function')
+})
 
 test('Point', t => {
   t.is(typeof Point, 'function')
