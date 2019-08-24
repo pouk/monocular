@@ -1,3 +1,5 @@
+const R = require('ramda')
+
 /**
  * Check if proportionally similar
  *
@@ -14,4 +16,4 @@ function isSimilar (r1, r2) {
   return factorX === factorY
 }
 
-module.exports = isSimilar
+module.exports = R.curry(isSimilar)

@@ -1,3 +1,5 @@
+const R = require('ramda')
+
 /**
  * Get base position of rectangle
  *
@@ -10,4 +12,4 @@ function positionOf (rect) {
   return rect.position
 }
 
-module.exports = positionOf
+module.exports = R.curry(positionOf)

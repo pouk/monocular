@@ -1,3 +1,5 @@
+const R = require('ramda')
+
 const Point = require('../Point')
 
 /**
@@ -13,4 +15,4 @@ function create (x, y) {
   return Point(x, y)
 }
 
-module.exports = create
+module.exports = R.curry(create)

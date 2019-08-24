@@ -1,3 +1,5 @@
+const R = require('ramda')
+
 const create = require('./create')
 
 /**
@@ -13,4 +15,4 @@ function map (f, p) {
   return create(f(p.x), f(p.y))
 }
 
-module.exports = map
+module.exports = R.curry(map)

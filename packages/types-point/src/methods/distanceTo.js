@@ -1,3 +1,5 @@
+const R = require('ramda')
+
 const { Distance2 } = require('@monocular/types-measure')
 
 /**
@@ -16,4 +18,4 @@ function distanceTo (q, p) {
   return Distance2(dx, dy)
 }
 
-module.exports = distanceTo
+module.exports = R.curry(distanceTo)

@@ -1,3 +1,5 @@
+const R = require('ramda')
+
 const Rectangle = require('../Rectangle')
 
 /**
@@ -13,4 +15,4 @@ function create (position, size) {
   return Rectangle(position, size)
 }
 
-module.exports = create
+module.exports = R.curry(create)

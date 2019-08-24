@@ -1,3 +1,5 @@
+const R = require('ramda')
+
 const translate = require('./translate')
 
 /**
@@ -13,4 +15,4 @@ function translateBy (delta, point) {
   return translate(delta.x, delta.y, point)
 }
 
-module.exports = translateBy
+module.exports = R.curry(translateBy)

@@ -1,3 +1,5 @@
+const R = require('ramda')
+
 const distanceTo = require('./distanceTo')
 
 /**
@@ -13,4 +15,4 @@ function distanceFrom (q, p) {
   return distanceTo(q, p).invert()
 }
 
-module.exports = distanceFrom
+module.exports = R.curry(distanceFrom)

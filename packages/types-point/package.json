@@ -33,6 +33,7 @@
   },
   "dependencies": {
     "@monocular/types-measure": "*",
-    "daggy": "^1.4.0"
+    "daggy": "^1.4.0",
+    "ramda": "^0.26.1"
   }
 }

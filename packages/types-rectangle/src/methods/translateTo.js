@@ -1,3 +1,5 @@
+const R = require('ramda')
+
 const create = require('./create')
 
 /**
@@ -13,4 +15,4 @@ function translateTo (position, rect) {
   return create(position, rect.size)
 }
 
-module.exports = translateTo
+module.exports = R.curry(translateTo)

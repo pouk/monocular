@@ -1,3 +1,5 @@
+const R = require('ramda')
+
 const create = require('./Measure.Distance2.create.js')
 
 function map (fn, d) {
@@ -7,4 +9,4 @@ function map (fn, d) {
   return create(x, y)
 }
 
-module.exports = map
+module.exports = R.curry(map)

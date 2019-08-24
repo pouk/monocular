@@ -1,3 +1,5 @@
+const R = require('ramda')
+
 const scale = require('./scale')
 const alignCenterWith = require('./alignCenterWith')
 
@@ -15,4 +17,4 @@ function scaleFromCenter (k, rect) {
   return alignCenterWith(rect, r1)
 }
 
-module.exports = scaleFromCenter
+module.exports = R.curry(scaleFromCenter)

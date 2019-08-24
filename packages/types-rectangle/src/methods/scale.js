@@ -1,3 +1,5 @@
+const R = require('ramda')
+
 const create = require('./create')
 
 /**
@@ -15,4 +17,4 @@ function scale (k, rect) {
   return create(rect.position, size)
 }
 
-module.exports = scale
+module.exports = R.curry(scale)

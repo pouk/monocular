@@ -1,3 +1,5 @@
+const R = require('ramda')
+
 const create = require('./create')
 
 /**
@@ -14,4 +16,4 @@ function translate (dx, dy, point) {
   return create(point.x + dx, point.y + dy)
 }
 
-module.exports = translate
+module.exports = R.curry(translate)
