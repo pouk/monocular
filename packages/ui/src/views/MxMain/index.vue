@@ -4,13 +4,16 @@
       mx-display(v-model="displayShape")
         code
           pre {{ displayShape }}
-          pre {{ focusArea }}
+          pre
+            | {{ focusPosition }}
+            | {{ focusSize }}
 
     el-aside
       mx-minimap(
-        v-if="focusArea"
-        v-model="focusArea"
-        :original-shape="imageShape"
+        v-if="focusPosition"
+        v-model="focusPosition"
+        :original-size="imageSize"
+        :marker-size="focusSize"
       )
         img(:src="imageSource")
 </template>

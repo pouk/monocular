@@ -1,64 +1,72 @@
-import { Rectangle } from '@monocular/types'
+import { Measure } from '@monocular/types'
 
 import MxMinimap from '@/components/MxMinimap'
 import MxDisplay from '@/components/MxDisplay-next'
 
+//
+
+const { Distance2 } = Measure
+
 // helpers
 
-const aspectRatioOf = rect => {
-  const { width, height } = rect
-
-  return width / height
-}
+const aspectRatioOf = ({ x, y }) => x / y
 
 // specs
 
 const data = () => {
   const imageSource = '/images/the-fight.jpg'
-  const imageShape = Rectangle.createBase(4800, 3466)
+  const imageSize = Distance2(4800, 3466)
 
   return {
     displayShape: void 0,
-    focusArea: void 0,
+    focusPosition: void 0,
+    focusSize: void 0,
     zoomFactor: void 0,
     //
     imageSource,
-    imageShape
+    imageSize
   }
 }
 
 const computed = {
   imageAspectRatio () {
-    const { imageShape } = this
-
-    return aspectRatioOf(imageShape)
+    const { imageSize } = this
+    return aspectRatioOf(imageSize)
   },
-  displayAspectRatio () {
+  displaySize () {
     const { displayShape } = this
 
     if (!displayShape) return void 0
 
-    return aspectRatioOf(displayShape)
+    return displayShape.getSize()
+  },
+  displayAspectRatio () {
+    const { displaySize } = this
+
+    if (!displaySize) return void 0
+
+    return aspectRatioOf(displaySize)
   }
 }
 
 const watch = {
   displayShape () {
-    const { imageShape, displayShape } = this
+    const { imageSize, displaySize } = this
 
-    const imageARC = aspectRatioOf(imageShape)
-    const displayARC = aspectRatioOf(displayShape)
+    const imageARC = aspectRatioOf(imageSize)
+    const displayARC = aspectRatioOf(displaySize)
 
     this.zoomFactor = imageARC < displayARC
-      ? imageShape.width / displayShape.width
-      : imageShape.height / displayShape.height
+      ? imageSize.x / displaySize.x
+      : imageSize.y / displaySize.y
   },
   zoomFactor () {
-    const { displayShape, imageShape, zoomFactor } = this
+    const { displayShape, zoomFactor } = this
 
-    this.focusArea = displayShape
-      .scale(zoomFactor)
-      .alignCenterWith(imageShape)
+    const { position, size } = displayShape.scale(zoomFactor)
+
+    this.focusPosition = position
+    this.focusSize = size
   }
 }
 

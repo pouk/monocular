@@ -5,9 +5,7 @@ const { Rectangle } = require('@monocular/types')
 const shapeOfElement = el => {
   const { x, y } = el.getBoundingClientRect()
 
-  return Rectangle
-    .createBase(el.clientWidth, el.clientHeight)
-    .translate(x, y)
+  return Rectangle.createSpread(x, y, el.clientWidth, el.clientHeight)
 }
 
 // specs

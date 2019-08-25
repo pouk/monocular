@@ -1,4 +1,4 @@
-import { Point } from '@monocular/types'
+import { Point, Measure } from '@monocular/types'
 
 const positionOfElement = el => {
   const { x, y } = el.getBoundingClientRect()
@@ -14,22 +14,22 @@ const relativePointTo = (el2, el1) => {
     .translate(-b.x, -b.y)
 }
 
-const cssPositionOfRect = rect => {
-  const { x, y } = rect.origin
-
-  return {
-    top: `${y}px`,
-    left: `${x}px`
+const cssFrom = input => {
+  if (Point.is(input)) {
+    return {
+      top: `${input.y}px`,
+      left: `${input.x}px`
+    }
   }
-}
 
-const cssSizeOfRect = rect => {
-  const { width, height } = rect
-
-  return {
-    width: `${width}px`,
-    height: `${height}px`
+  if (Measure.Distance2.is(input)) {
+    return {
+      width: `${input.x}px`,
+      height: `${input.y}px`
+    }
   }
+
+  throw new TypeError('Not supported type')
 }
 
 const onMouseMoveGlobal = callback => {
@@ -45,7 +45,6 @@ const onMouseMoveGlobal = callback => {
 export {
   positionOfElement,
   relativePointTo,
-  cssPositionOfRect,
-  cssSizeOfRect,
+  cssFrom,
   onMouseMoveGlobal
 }
