@@ -1,18 +1,12 @@
 <template lang="pug">
-  div.container(ref="containerElement")
-    mx-display(
-      v-if="isReady"
-      :image-source="imageSource"
-      :original-shape="originalShape"
-      :selected-shape="selectedShape"
-      :bbox="bbox"
-      )
+div.mx-display-container(ref="containerElement")
+  slot
 </template>
 
 <script src="./main.js"></script>
 
 <style scoped>
-.container {
+.mx-display-container {
   width: 100%;
   height: 100%;
   margin: 0;

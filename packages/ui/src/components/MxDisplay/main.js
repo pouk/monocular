@@ -1,68 +1,29 @@
-import { Rectangle } from '@monocular/types'
-
-import MxDisplay from './display.vue'
+const { Rectangle } = require('@monocular/types')
 
 // helpers
 
-const layoutOfElement = el => {
-  if (!el) return el
+const shapeOfElement = el => {
+  const { x, y } = el.getBoundingClientRect()
 
-  const { top, left, bottom, right } = el.getBoundingClientRect()
-
-  const width = right - left
-  const height = bottom - top
-
-  return Rectangle.createBase(width, height)
+  return Rectangle.createSpread(x, y, el.clientWidth, el.clientHeight)
 }
 
 // specs
 
 const props = {
-  imageSource: String,
-  originalShape: Rectangle,
-  selectedShape: {
-    type: Rectangle,
-    default () {
-      return this.originalShape
-    }
-  }
-}
-
-const data = () => {
-  return {
-    bbox: null
-  }
-}
-
-const computed = {
-  isReady () {
-    return !!this.bbox
+  value: {
+    type: Rectangle
   }
 }
 
 function mounted () {
-  const updateLayout = this.updateLayout.bind(this)
+  const { containerElement } = this.$refs
 
-  window.addEventListener('resize', updateLayout)
-  updateLayout()
-}
-
-const methods = {
-  updateLayout () {
-    const { containerElement } = this.$refs
-    this.bbox = layoutOfElement(containerElement)
-  }
+  this.$emit('input', shapeOfElement(containerElement))
 }
 
 export default {
-  name: 'MxDisplayBox',
+  name: 'MxDisplay',
   props,
-  data,
-  computed,
-  methods,
-  // hooks
-  mounted,
-  components: {
-    MxDisplay
-  }
+  mounted
 }

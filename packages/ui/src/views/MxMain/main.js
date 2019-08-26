@@ -1,7 +1,7 @@
 import { Measure, Rectangle } from '@monocular/types'
 
 import MxMinimap from '@/components/MxMinimap'
-import MxDisplay from '@/components/MxDisplay-next'
+import MxDisplay from '@/components/MxDisplay'
 import MxCanvas from '@/components/MxCanvas'
 
 //
