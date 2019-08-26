@@ -1,13 +1,5 @@
 <template lang="pug">
   el-container
-    el-main
-      mx-display(v-model="displayShape")
-        code
-          pre {{ displayShape }}
-          pre
-            | {{ focusPosition }}
-            | {{ focusSize }}
-
     el-aside
       mx-minimap(
         v-if="focusPosition"
@@ -16,6 +8,14 @@
         :marker-size="focusSize"
       )
         img(:src="imageSource")
+
+    el-main
+      mx-display(v-model="displayShape")
+        canvas(v-if="displayShape"
+          ref="canvasElement"
+          :width="displayShape.size.x"
+          :height="displayShape.size.y"
+        )
 </template>
 
 <script src="./main.js"></script>
