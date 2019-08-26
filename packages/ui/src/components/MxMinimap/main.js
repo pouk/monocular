@@ -1,12 +1,13 @@
-import { Point, Rectangle } from '@monocular/types'
+import { Point, Rectangle, Measure } from '@monocular/types'
 
 import * as H from './helpers'
 
 // specs
 
 const props = {
-  originalShape: Rectangle,
-  value: Rectangle
+  originalSize: Measure,
+  markerSize: Measure,
+  value: Point
 }
 
 function data () {
@@ -17,14 +18,19 @@ function data () {
 
 const computed = {
   // readable alias
-  markerShape () {
+  markerPosition () {
     return this.value
   },
-  getBoundedOriginFrom () {
-    const { originalShape, markerShape } = this
+  markerShape () {
+    const { markerPosition, markerSize } = this
 
-    const rangeX = originalShape.width - markerShape.width
-    const rangeY = originalShape.height - markerShape.height
+    return Rectangle.create(markerPosition, markerSize)
+  },
+  getBoundedOriginFrom () {
+    const { originalSize, markerShape } = this
+
+    const rangeX = originalSize.x - markerShape.size.x
+    const rangeY = originalSize.y - markerShape.size.y
 
     return point => {
       const x = Math.max(0, Math.min(rangeX, point.x))
@@ -34,20 +40,20 @@ const computed = {
     }
   },
   displayStyles () {
-    const { originalShape, displayScale } = this
+    const { originalSize, displayScale } = this
 
-    const displayShape = originalShape.scale(displayScale)
+    const size = originalSize.scale(displayScale)
 
-    return H.cssSizeOfRect(displayShape)
+    return H.cssFrom(size)
   },
   markerStyles () {
     const { markerShape, displayScale } = this
 
-    const markerRegion = markerShape.scaleFromBase(displayScale)
+    const { position, size } = markerShape.scaleFromOrigin(displayScale)
 
     return [
-      H.cssPositionOfRect(markerRegion),
-      H.cssSizeOfRect(markerRegion)
+      H.cssFrom(position),
+      H.cssFrom(size)
     ]
   }
 }
@@ -61,15 +67,16 @@ function mounted () {
 
 const methods = {
   resetLayout (e) {
-    const { originalShape } = this
+    const { originalSize } = this
     const { displayElement } = this.$refs
 
-    this.displayScale = displayElement.clientWidth / originalShape.width
+    this.displayScale = displayElement.clientWidth / originalSize.x
   },
   onDragStart (e) {
     const { markerElement, displayElement } = this.$refs
 
     const { x, y } = H.relativePointTo(displayElement, markerElement)
+
     const dx = x - e.clientX
     const dy = y - e.clientY
 
@@ -84,12 +91,11 @@ const methods = {
     H.onMouseMoveGlobal(onMouseMove)
   },
   onDrag (point) {
-    const { displayScale, markerShape } = this
+    const { displayScale } = this
 
     const position = point.map(n => n / displayScale)
-    const origin = this.getBoundedOriginFrom(position)
+    const nextValue = this.getBoundedOriginFrom(position)
 
-    const nextValue = markerShape.translateTo(origin)
     this.$emit('input', nextValue)
   }
 }

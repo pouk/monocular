@@ -1,18 +1,22 @@
 <template lang="pug">
   el-container
-    el-main
-      mx-display(v-model="displayShape")
-        code
-          pre {{ displayShape }}
-          pre {{ focusArea }}
-
     el-aside
       mx-minimap(
-        v-if="focusArea"
-        v-model="focusArea"
-        :original-shape="imageShape"
+        v-if="focusPosition"
+        v-model="focusPosition"
+        :original-size="imageSize"
+        :marker-size="focusSize"
       )
         img(:src="imageSource")
+
+    el-main
+      mx-display(v-model="displayShape")
+        mx-canvas(
+          v-if="displayShape"
+          :size="displayShape.size"
+          :image="image"
+          :target="focusArea"
+        )
 </template>
 
 <script src="./main.js"></script>
