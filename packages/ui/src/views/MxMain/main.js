@@ -2,6 +2,7 @@ import { Measure, Rectangle } from '@monocular/types'
 
 import MxMinimap from '@/components/MxMinimap'
 import MxDisplay from '@/components/MxDisplay-next'
+import MxCanvas from '@/components/MxCanvas'
 
 //
 
@@ -56,13 +57,6 @@ const computed = {
     const { focusPosition, focusSize } = this
 
     return Rectangle.create(focusPosition, focusSize)
-  },
-  canvasCtx () {
-    const { canvasElement } = this.$refs
-
-    if (!canvasElement) return void 0
-
-    return canvasElement.getContext('2d')
   }
 }
 
@@ -84,29 +78,10 @@ const watch = {
 
     this.focusPosition = position
     this.focusSize = size
-  },
-  focusArea () {
-    this.redraw()
   }
 }
 
-const methods = {
-  redraw () {
-    const { image, displaySize, focusArea } = this
-
-    const { canvasElement } = this.$refs
-
-    if (!canvasElement) return void 0
-
-    const ctx = canvasElement.getContext('2d')
-
-    const { x: sx, y: sy } = focusArea.position
-    const { x: sw, y: sh } = focusArea.size
-    const { x: dw, y: dh } = displaySize
-
-    ctx.drawImage(image, sx, sy, sw, sh, 0, 0, dw, dh)
-  }
-}
+const methods = {}
 
 export default {
   name: 'MxMainView',
@@ -116,6 +91,7 @@ export default {
   methods,
   components: {
     MxMinimap,
-    MxDisplay
+    MxDisplay,
+    MxCanvas
   }
 }

@@ -11,10 +11,11 @@
 
     el-main
       mx-display(v-model="displayShape")
-        canvas(v-if="displayShape"
-          ref="canvasElement"
-          :width="displayShape.size.x"
-          :height="displayShape.size.y"
+        mx-canvas(
+          v-if="displayShape"
+          :size="displayShape.size"
+          :image="image"
+          :target="focusArea"
         )
 </template>
 
