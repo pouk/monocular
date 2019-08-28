@@ -10,10 +10,10 @@
         img(:src="imageSource")
 
     el-main
-      mx-display(v-model="displayShape")
+      div.mx-container(ref="canvasContainer")
         mx-canvas(
-          v-if="displayShape"
-          :size="displayShape.size"
+          v-if="displaySize"
+          :size="displaySize"
           :image="image"
           :target="focusArea"
         )
@@ -21,4 +21,10 @@
 
 <script src="./main.js"></script>
 
-<style></style>
+<style>
+.mx-container {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+}
+</style>

@@ -1,7 +1,6 @@
-import { Measure, Rectangle } from '@monocular/types'
+import { Measure, Point, Rectangle } from '@monocular/types'
 
 import MxMinimap from '@/components/MxMinimap'
-import MxDisplay from '@/components/MxDisplay'
 import MxCanvas from '@/components/MxCanvas'
 
 //
@@ -11,6 +10,11 @@ const { Distance2 } = Measure
 // helpers
 
 const aspectRatioOf = ({ x, y }) => x / y
+
+const sizeOfElement = el => {
+  const { clientWidth: x, clientHeight: y } = el
+  return Distance2.create(x, y)
+}
 
 // specs
 
@@ -23,7 +27,7 @@ const data = () => {
   image.src = imageSource
 
   return {
-    displayShape: void 0,
+    canvasSize: void 0,
     focusPosition: void 0,
     focusSize: void 0,
     zoomFactor: void 0,
@@ -39,19 +43,12 @@ const computed = {
     const { imageSize } = this
     return aspectRatioOf(imageSize)
   },
-  displaySize () {
-    const { displayShape } = this
-
-    if (!displayShape) return void 0
-
-    return displayShape.getSize()
-  },
   displayAspectRatio () {
-    const { displaySize } = this
+    const { canvasSize } = this
 
-    if (!displaySize) return void 0
+    if (!canvasSize) return void 0
 
-    return aspectRatioOf(displaySize)
+    return aspectRatioOf(canvasSize)
   },
   focusArea () {
     const { focusPosition, focusSize } = this
@@ -61,27 +58,35 @@ const computed = {
 }
 
 const watch = {
-  displayShape () {
-    const { imageSize, displaySize } = this
+  canvasSize () {
+    const { imageSize, canvasSize } = this
 
     const imageARC = aspectRatioOf(imageSize)
-    const displayARC = aspectRatioOf(displaySize)
+    const displayARC = aspectRatioOf(canvasSize)
 
     this.zoomFactor = imageARC < displayARC
-      ? imageSize.x / displaySize.x
-      : imageSize.y / displaySize.y
+      ? imageSize.x / canvasSize.x
+      : imageSize.y / canvasSize.y
   },
   zoomFactor () {
-    const { displayShape, zoomFactor } = this
+    const { canvasSize, zoomFactor } = this
 
-    const { position, size } = displayShape.scale(zoomFactor)
-
-    this.focusPosition = position
-    this.focusSize = size
+    this.focusPosition = Point.create(0, 0)
+    this.focusSize = canvasSize.scale(zoomFactor)
   }
 }
 
-const methods = {}
+const methods = {
+  resetLayout () {
+    const { canvasContainer } = this.$refs
+
+    this.canvasSize = sizeOfElement(canvasContainer)
+  }
+}
+
+function mounted () {
+  this.resetLayout()
+}
 
 export default {
   name: 'MxMainView',
@@ -91,7 +96,7 @@ export default {
   methods,
   components: {
     MxMinimap,
-    MxDisplay,
     MxCanvas
-  }
+  },
+  mounted
 }
