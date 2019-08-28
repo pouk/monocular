@@ -1,13 +1,39 @@
 const { Point } = require('@monocular/types')
 
-// helpers
+// specs
 
-const positionOfEvent = e => {
-  const { clientX: x, clientY: y } = e
-  return Point.create(x, y)
+const props = {
+  relative: {
+    type: Boolean,
+    default: false
+  }
 }
 
-// specs
+const computed = {
+  origin () {
+    if (!this.relative) {
+      return Point.create(0, 0)
+    }
+
+    const { x, y } = this.$el.getBoundingClientRect()
+    return Point.create(x, y)
+  },
+  positionOfEvent () {
+    const { origin } = this
+
+    const delta = Point
+      .create(0, 0)
+      .distanceFrom(origin)
+
+    return e => {
+      const { clientX: x, clientY: y } = e
+
+      return Point
+        .create(x, y)
+        .translateBy(delta)
+    }
+  }
+}
 
 const methods = {
   handleDrag (eDown) {
@@ -34,40 +60,42 @@ const methods = {
     window.addEventListener('mouseup', onDragEnd)
   },
   onClick (e) {
-    const position = positionOfEvent(e)
+    const position = this.positionOfEvent(e)
 
     this.$emit('click', { position })
   },
   onDblClick (e) {
-    const position = positionOfEvent(e)
+    const position = this.positionOfEvent(e)
 
     this.$emit('dblclick', { position })
   },
   onMouseDown (e) {
-    const position = positionOfEvent(e)
+    const position = this.positionOfEvent(e)
 
     this.handleDrag(e)
 
     this.$emit('mousedown', { position })
   },
   onMouseUp (e) {
-    const position = positionOfEvent(e)
+    const position = this.positionOfEvent(e)
 
     this.$emit('mouseup', { position })
   },
   onDragStart (e) {
-    const position = positionOfEvent(e)
+    const position = this.positionOfEvent(e)
 
     this.$emit('dragstart', { position })
   },
   onDrag (e, ePrev, eFirst) {
+    const { positionOfEvent } = this
+
     const position = positionOfEvent(e)
     const movement = positionOfEvent(ePrev).distanceTo(position)
 
     this.$emit('drag', { position, movement })
   },
   onDragEnd (e, ePrev, eFirst) {
-    const position = positionOfEvent(e)
+    const position = this.positionOfEvent(e)
 
     this.$emit('dragend', { position })
   }
@@ -75,5 +103,7 @@ const methods = {
 
 export default {
   name: 'MxScreenOverlay',
+  props,
+  computed,
   methods
 }
