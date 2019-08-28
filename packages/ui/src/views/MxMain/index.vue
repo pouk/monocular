@@ -11,12 +11,15 @@
 
     el-main
       div.mx-container(ref="canvasContainer")
-        mx-canvas(
-          v-if="displaySize"
-          :size="displaySize"
-          :image="image"
-          :target="focusArea"
+        mx-screen-overlay(
+          @drag="onDrag"
         )
+          mx-canvas(
+            v-if="canvasSize"
+            :size="canvasSize"
+            :image="image"
+            :target="focusArea"
+          )
 </template>
 
 <script src="./main.js"></script>

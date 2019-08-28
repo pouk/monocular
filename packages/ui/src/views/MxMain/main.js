@@ -1,6 +1,7 @@
 import { Measure, Point, Rectangle } from '@monocular/types'
 
 import MxMinimap from '@/components/MxMinimap'
+import MxScreenOverlay from '@/components/MxScreenOverlay'
 import MxCanvas from '@/components/MxCanvas'
 
 //
@@ -77,6 +78,15 @@ const watch = {
 }
 
 const methods = {
+  onDrag (e) {
+    const { focusPosition, zoomFactor } = this
+
+    const movement = e.movement
+      .scale(zoomFactor)
+      .invert()
+
+    this.focusPosition = focusPosition.translateBy(movement)
+  },
   resetLayout () {
     const { canvasContainer } = this.$refs
 
@@ -96,6 +106,7 @@ export default {
   methods,
   components: {
     MxMinimap,
+    MxScreenOverlay,
     MxCanvas
   },
   mounted
