@@ -30,7 +30,7 @@ const data = () => {
   return {
     canvasSize: void 0,
     deltaPan: Distance2.empty(),
-    zoomFactor: void 0,
+    zoomFactor: 1,
     //
     image,
     imageSource,
@@ -51,29 +51,42 @@ const computed = {
 
     return aspectRatioOf(canvasSize)
   },
-  focusPosition () {
-    const { deltaPan } = this
+  focusPosition: {
+    get () {
+      const { deltaPan } = this
 
-    return Point
-      .create(0, 0)
-      .translateBy(deltaPan)
+      return Point
+        .create(0, 0)
+        .translateBy(deltaPan)
+    },
+    set (point) {
+      const { imageSize, focusSize } = this
+
+      const dx = focusSize.x / 2
+      const dy = focusSize.y / 2
+
+      const x = Math.max(dx, Math.min(imageSize.x - dx, point.x))
+      const y = Math.max(dy, Math.min(imageSize.y - dy, point.y))
+
+      this.deltaPan = Distance2.create(x, y)
+    }
+  },
+  focusSize () {
+    const { zoomFactor, canvasSize } = this
+
+    return canvasSize.scale(zoomFactor)
   },
   focusArea () {
-    const { deltaPan, zoomFactor, canvasSize } = this
+    const { focusPosition, focusSize } = this
 
-    const size = canvasSize.scale(zoomFactor)
-
-    const bias = size
+    const bias = focusSize
       .scale(1 / 2)
       .invert()
 
-    const delta = deltaPan.concat(bias)
-
-    const position = Point
-      .create(0, 0)
-      .translateBy(delta)
-
-    return Rectangle.create(position, size)
+    return Rectangle
+      .createFromOrigin(focusSize)
+      .translateTo(focusPosition)
+      .translateBy(bias)
   }
 }
 
@@ -84,26 +97,23 @@ const watch = {
     const imageARC = aspectRatioOf(imageSize)
     const displayARC = aspectRatioOf(canvasSize)
 
-    const zoomFactor = imageARC < displayARC
+    this.zoomFactor = imageARC < displayARC
       ? imageSize.x / canvasSize.x
       : imageSize.y / canvasSize.y
 
-    const deltaPan = imageSize.scale(1 / 2)
-
-    this.zoomFactor = zoomFactor
-    this.deltaPan = deltaPan
+    this.deltaPan = imageSize.scale(1 / 2)
   }
 }
 
 const methods = {
   onDrag (e) {
-    const { deltaPan, zoomFactor } = this
+    const { focusPosition, zoomFactor } = this
 
     const movement = e.movement
       .scale(zoomFactor)
       .invert()
 
-    this.deltaPan = deltaPan.concat(movement)
+    this.focusPosition = focusPosition.translateBy(movement)
   },
   resetLayout () {
     const { canvasContainer } = this.$refs
