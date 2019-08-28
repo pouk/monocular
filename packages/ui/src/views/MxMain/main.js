@@ -29,8 +29,7 @@ const data = () => {
 
   return {
     canvasSize: void 0,
-    focusPosition: void 0,
-    focusSize: void 0,
+    deltaPan: Distance2.empty(),
     zoomFactor: void 0,
     //
     image,
@@ -42,6 +41,7 @@ const data = () => {
 const computed = {
   imageAspectRatio () {
     const { imageSize } = this
+
     return aspectRatioOf(imageSize)
   },
   displayAspectRatio () {
@@ -51,10 +51,29 @@ const computed = {
 
     return aspectRatioOf(canvasSize)
   },
-  focusArea () {
-    const { focusPosition, focusSize } = this
+  focusPosition () {
+    const { deltaPan } = this
 
-    return Rectangle.create(focusPosition, focusSize)
+    return Point
+      .create(0, 0)
+      .translateBy(deltaPan)
+  },
+  focusArea () {
+    const { deltaPan, zoomFactor, canvasSize } = this
+
+    const size = canvasSize.scale(zoomFactor)
+
+    const bias = size
+      .scale(1 / 2)
+      .invert()
+
+    const delta = deltaPan.concat(bias)
+
+    const position = Point
+      .create(0, 0)
+      .translateBy(delta)
+
+    return Rectangle.create(position, size)
   }
 }
 
@@ -65,27 +84,26 @@ const watch = {
     const imageARC = aspectRatioOf(imageSize)
     const displayARC = aspectRatioOf(canvasSize)
 
-    this.zoomFactor = imageARC < displayARC
+    const zoomFactor = imageARC < displayARC
       ? imageSize.x / canvasSize.x
       : imageSize.y / canvasSize.y
-  },
-  zoomFactor () {
-    const { canvasSize, zoomFactor } = this
 
-    this.focusPosition = Point.create(0, 0)
-    this.focusSize = canvasSize.scale(zoomFactor)
+    const deltaPan = imageSize.scale(1 / 2)
+
+    this.zoomFactor = zoomFactor
+    this.deltaPan = deltaPan
   }
 }
 
 const methods = {
   onDrag (e) {
-    const { focusPosition, zoomFactor } = this
+    const { deltaPan, zoomFactor } = this
 
     const movement = e.movement
       .scale(zoomFactor)
       .invert()
 
-    this.focusPosition = focusPosition.translateBy(movement)
+    this.deltaPan = deltaPan.concat(movement)
   },
   resetLayout () {
     const { canvasContainer } = this.$refs

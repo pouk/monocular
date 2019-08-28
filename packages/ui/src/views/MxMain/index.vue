@@ -1,13 +1,13 @@
 <template lang="pug">
   el-container
     el-aside
-      mx-minimap(
-        v-if="focusPosition"
-        v-model="focusPosition"
-        :original-size="imageSize"
-        :marker-size="focusSize"
-      )
-        img(:src="imageSource")
+      <!-- mx-minimap( -->
+      <!--   v-if="focusSize" -->
+      <!--   :value="focusPosition" -->
+      <!--   :original-size="imageSize" -->
+      <!--   :marker-size="focusSize" -->
+      <!-- ) -->
+      <!--   img(:src="imageSource") -->
 
     el-main
       div.mx-container(ref="canvasContainer")
