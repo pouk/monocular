@@ -1,13 +1,12 @@
 <template lang="pug">
   el-container
     el-aside
-      <!-- mx-minimap( -->
-      <!--   v-if="focusSize" -->
-      <!--   :value="focusPosition" -->
-      <!--   :original-size="imageSize" -->
-      <!--   :marker-size="focusSize" -->
-      <!-- ) -->
-      <!--   img(:src="imageSource") -->
+      mx-minimap(
+        v-if="focusArea"
+        :original-size="imageSize"
+        :focus-area="focusArea"
+      )
+        img.thumbnail(:src="imageSource")
 
     el-main
       div.mx-container(ref="canvasContainer")
@@ -29,5 +28,10 @@
   width: 100%;
   height: 100%;
   margin: 0;
+}
+
+.thumbnail {
+  max-width: 100%;
+  max-height: 100%;
 }
 </style>

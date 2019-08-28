@@ -74,10 +74,14 @@ const computed = {
   focusSize () {
     const { zoomFactor, canvasSize } = this
 
+    if (!canvasSize) return void 0
+
     return canvasSize.scale(zoomFactor)
   },
   focusArea () {
     const { focusPosition, focusSize } = this
+
+    if (!focusSize) return void 0
 
     const bias = focusSize
       .scale(1 / 2)

@@ -1,4 +1,4 @@
-import { Point, Rectangle, Measure } from '@monocular/types'
+import { Rectangle, Measure } from '@monocular/types'
 
 import * as H from './helpers'
 
@@ -6,50 +6,27 @@ import * as H from './helpers'
 
 const props = {
   originalSize: Measure,
-  markerSize: Measure,
-  value: Point
+  focusArea: Rectangle
 }
 
 function data () {
   return {
-    displayScale: void 0
+    scale: void 0
   }
 }
 
 const computed = {
-  // readable alias
-  markerPosition () {
-    return this.value
-  },
-  markerShape () {
-    const { markerPosition, markerSize } = this
-
-    return Rectangle.create(markerPosition, markerSize)
-  },
-  getBoundedOriginFrom () {
-    const { originalSize, markerShape } = this
-
-    const rangeX = originalSize.x - markerShape.size.x
-    const rangeY = originalSize.y - markerShape.size.y
-
-    return point => {
-      const x = Math.max(0, Math.min(rangeX, point.x))
-      const y = Math.max(0, Math.min(rangeY, point.y))
-
-      return Point.create(x, y)
-    }
-  },
   displayStyles () {
-    const { originalSize, displayScale } = this
+    const { originalSize, scale } = this
 
-    const size = originalSize.scale(displayScale)
+    const size = originalSize.scale(scale)
 
     return H.cssFrom(size)
   },
   markerStyles () {
-    const { markerShape, displayScale } = this
+    const { focusArea, scale } = this
 
-    const { position, size } = markerShape.scaleFromOrigin(displayScale)
+    const { position, size } = focusArea.scaleFromOrigin(scale)
 
     return [
       H.cssFrom(position),
@@ -68,35 +45,9 @@ function mounted () {
 const methods = {
   resetLayout (e) {
     const { originalSize } = this
-    const { displayElement } = this.$refs
+    const container = this.$el
 
-    this.displayScale = displayElement.clientWidth / originalSize.x
-  },
-  onDragStart (e) {
-    const { markerElement, displayElement } = this.$refs
-
-    const { x, y } = H.relativePointTo(displayElement, markerElement)
-
-    const dx = x - e.clientX
-    const dy = y - e.clientY
-
-    const onMouseMove = e => {
-      const point = Point
-        .create(e.clientX, e.clientY)
-        .translate(dx, dy)
-
-      this.onDrag(point)
-    }
-
-    H.onMouseMoveGlobal(onMouseMove)
-  },
-  onDrag (point) {
-    const { displayScale } = this
-
-    const position = point.map(n => n / displayScale)
-    const nextValue = this.getBoundedOriginFrom(position)
-
-    this.$emit('input', nextValue)
+    this.scale = container.clientWidth / originalSize.x
   }
 }
 
