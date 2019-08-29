@@ -9,9 +9,16 @@
 
     el-button(
       circle
-      disabled
-      title="Zoom"
+      title="Zoom in"
       icon="el-icon-zoom-in"
+      @click.prevent="onZoomIn"
+    )
+
+    el-button(
+      circle
+      title="Zoom out"
+      icon="el-icon-zoom-out"
+      @click.prevent="onZoomOut"
     )
 
     el-button(
@@ -32,6 +39,7 @@
       circle
       title="Reset"
       icon="el-icon-refresh"
+      @click.prevent="onReset"
     )
 
     el-button(

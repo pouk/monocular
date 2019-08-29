@@ -32,6 +32,7 @@ const data = () => {
     canvasSize: void 0,
     deltaPan: Distance2.empty(),
     zoomFactor: 1,
+    initialZoom: 1,
     //
     image,
     imageSource,
@@ -97,16 +98,7 @@ const computed = {
 
 const watch = {
   canvasSize () {
-    const { imageSize, canvasSize } = this
-
-    const imageARC = aspectRatioOf(imageSize)
-    const displayARC = aspectRatioOf(canvasSize)
-
-    this.zoomFactor = imageARC < displayARC
-      ? imageSize.x / canvasSize.x
-      : imageSize.y / canvasSize.y
-
-    this.deltaPan = imageSize.scale(1 / 2)
+    console.log('isReady')
   }
 }
 
@@ -120,10 +112,37 @@ const methods = {
 
     this.focusPosition = focusPosition.translateBy(movement)
   },
+  onZoomIn () {
+    this.zoomFactor *= 0.8
+  },
+  onZoomOut () {
+    const zoomFactor = this.zoomFactor / 0.8
+
+    this.zoomFactor = Math.min(zoomFactor, this.initialZoom)
+    this.focusPosition = this.focusPosition.translate(0, 0)
+  },
+  onReset () {
+    this.resetLayout()
+  },
   resetLayout () {
+    const { imageSize } = this
+
     const { canvasContainer } = this.$refs
 
-    this.canvasSize = sizeOfElement(canvasContainer)
+    const canvasSize = sizeOfElement(canvasContainer)
+
+    const imageARC = aspectRatioOf(imageSize)
+    const displayARC = aspectRatioOf(canvasSize)
+
+    this.initialZoom = imageARC < displayARC
+      ? imageSize.x / canvasSize.x
+      : imageSize.y / canvasSize.y
+
+    this.zoomFactor = this.initialZoom
+
+    this.deltaPan = imageSize.scale(1 / 2)
+
+    this.canvasSize = canvasSize
   }
 }
 
