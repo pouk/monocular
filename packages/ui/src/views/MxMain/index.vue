@@ -7,18 +7,21 @@
         :focus-area="focusArea"
       )
         img.thumbnail(:src="imageSource")
+    el-container
+      el-header
+        mx-toolset
 
-    el-main
-      div.mx-container(ref="canvasContainer")
-        mx-screen-overlay(
-          @drag="onDrag"
-        )
-          mx-canvas(
-            v-if="canvasSize"
-            :size="canvasSize"
-            :image="image"
-            :target="focusArea"
+      el-main
+        div.mx-container(ref="canvasContainer")
+          mx-screen-overlay(
+            @drag="onDrag"
           )
+            mx-canvas(
+              v-if="canvasSize"
+              :size="canvasSize"
+              :image="image"
+              :target="focusArea"
+            )
 </template>
 
 <script src="./main.js"></script>
@@ -28,6 +31,10 @@
   width: 100%;
   height: 100%;
   margin: 0;
+}
+
+.mx-nav {
+  padding: 20px 0;
 }
 
 .thumbnail {
