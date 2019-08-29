@@ -1,12 +1,17 @@
 <template lang="pug">
-div.mx-display-container(ref="containerElement")
+div.mx-overlay(
+  @mousedown="onMouseDown"
+  @mouseup="onMouseUp"
+  @click="onClick"
+  @dblclick="onDblClick"
+)
   slot
 </template>
 
 <script src="./main.js"></script>
 
 <style scoped>
-.mx-display-container {
+.mx-overlay {
   width: 100%;
   height: 100%;
   margin: 0;

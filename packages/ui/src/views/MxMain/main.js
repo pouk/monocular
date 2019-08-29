@@ -1,7 +1,7 @@
-import { Measure, Rectangle } from '@monocular/types'
+import { Measure, Point, Rectangle } from '@monocular/types'
 
 import MxMinimap from '@/components/MxMinimap'
-import MxDisplay from '@/components/MxDisplay'
+import MxScreenOverlay from '@/components/MxScreenOverlay'
 import MxCanvas from '@/components/MxCanvas'
 
 //
@@ -11,6 +11,11 @@ const { Distance2 } = Measure
 // helpers
 
 const aspectRatioOf = ({ x, y }) => x / y
+
+const sizeOfElement = el => {
+  const { clientWidth: x, clientHeight: y } = el
+  return Distance2.create(x, y)
+}
 
 // specs
 
@@ -23,10 +28,9 @@ const data = () => {
   image.src = imageSource
 
   return {
-    displayShape: void 0,
-    focusPosition: void 0,
-    focusSize: void 0,
-    zoomFactor: void 0,
+    canvasSize: void 0,
+    deltaPan: Distance2.empty(),
+    zoomFactor: 1,
     //
     image,
     imageSource,
@@ -37,51 +41,94 @@ const data = () => {
 const computed = {
   imageAspectRatio () {
     const { imageSize } = this
+
     return aspectRatioOf(imageSize)
   },
-  displaySize () {
-    const { displayShape } = this
-
-    if (!displayShape) return void 0
-
-    return displayShape.getSize()
-  },
   displayAspectRatio () {
-    const { displaySize } = this
+    const { canvasSize } = this
 
-    if (!displaySize) return void 0
+    if (!canvasSize) return void 0
 
-    return aspectRatioOf(displaySize)
+    return aspectRatioOf(canvasSize)
+  },
+  focusPosition: {
+    get () {
+      const { deltaPan } = this
+
+      return Point
+        .create(0, 0)
+        .translateBy(deltaPan)
+    },
+    set (point) {
+      const { imageSize, focusSize } = this
+
+      const dx = focusSize.x / 2
+      const dy = focusSize.y / 2
+
+      const x = Math.max(dx, Math.min(imageSize.x - dx, point.x))
+      const y = Math.max(dy, Math.min(imageSize.y - dy, point.y))
+
+      this.deltaPan = Distance2.create(x, y)
+    }
+  },
+  focusSize () {
+    const { zoomFactor, canvasSize } = this
+
+    if (!canvasSize) return void 0
+
+    return canvasSize.scale(zoomFactor)
   },
   focusArea () {
     const { focusPosition, focusSize } = this
 
-    return Rectangle.create(focusPosition, focusSize)
+    if (!focusSize) return void 0
+
+    const bias = focusSize
+      .scale(1 / 2)
+      .invert()
+
+    return Rectangle
+      .createFromOrigin(focusSize)
+      .translateTo(focusPosition)
+      .translateBy(bias)
   }
 }
 
 const watch = {
-  displayShape () {
-    const { imageSize, displaySize } = this
+  canvasSize () {
+    const { imageSize, canvasSize } = this
 
     const imageARC = aspectRatioOf(imageSize)
-    const displayARC = aspectRatioOf(displaySize)
+    const displayARC = aspectRatioOf(canvasSize)
 
     this.zoomFactor = imageARC < displayARC
-      ? imageSize.x / displaySize.x
-      : imageSize.y / displaySize.y
-  },
-  zoomFactor () {
-    const { displayShape, zoomFactor } = this
+      ? imageSize.x / canvasSize.x
+      : imageSize.y / canvasSize.y
 
-    const { position, size } = displayShape.scale(zoomFactor)
-
-    this.focusPosition = position
-    this.focusSize = size
+    this.deltaPan = imageSize.scale(1 / 2)
   }
 }
 
-const methods = {}
+const methods = {
+  onDrag (e) {
+    const { focusPosition, zoomFactor } = this
+
+    const movement = e.movement
+      .scale(zoomFactor)
+      .invert()
+
+    this.focusPosition = focusPosition.translateBy(movement)
+  },
+  resetLayout () {
+    const { canvasContainer } = this.$refs
+
+    this.canvasSize = sizeOfElement(canvasContainer)
+  }
+}
+
+function mounted () {
+  this.resetLayout()
+}
 
 export default {
   name: 'MxMainView',
@@ -91,7 +138,8 @@ export default {
   methods,
   components: {
     MxMinimap,
-    MxDisplay,
+    MxScreenOverlay,
     MxCanvas
-  }
+  },
+  mounted
 }
