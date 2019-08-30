@@ -101,14 +101,20 @@ const computed = {
   }
 }
 
-const watch = {
-  canvasSize () {
-    console.log('isReady')
-  }
-}
+const watch = { }
 
 const methods = {
   onDrag (e) {
+    const { mode } = this
+
+    switch (mode) {
+      case 'pan':
+        return this.doPan(e)
+      case 'zoom':
+        return this.doZoom(e)
+    }
+  },
+  doPan (e) {
     const { focusPosition, zoomFactor } = this
 
     const movement = e.movement
@@ -117,14 +123,14 @@ const methods = {
 
     this.focusPosition = focusPosition.translateBy(movement)
   },
-  onZoomIn () {
-    this.zoomFactor *= 0.8
-  },
-  onZoomOut () {
-    const zoomFactor = this.zoomFactor / 0.8
+  doZoom (e) {
+    const { initialZoom } = this
 
-    this.zoomFactor = Math.min(zoomFactor, this.initialZoom)
-    this.focusPosition = this.focusPosition.translate(0, 0)
+    const delta = e.movement.y / 100
+
+    const factor = this.zoomFactor + delta
+
+    this.zoomFactor = Math.min(initialZoom, Math.max(0.1, factor))
   },
   onReset () {
     this.resetLayout()
