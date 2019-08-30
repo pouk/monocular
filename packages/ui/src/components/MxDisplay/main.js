@@ -28,7 +28,8 @@ const props = {
   size: Measure,
   imageSize: Measure,
   image: Image, // eslint-disable-line
-  focusArea: Rectangle
+  focusArea: Rectangle,
+  effects: Object
 }
 
 const computed = {

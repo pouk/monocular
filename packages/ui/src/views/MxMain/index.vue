@@ -17,11 +17,12 @@
           el-col(:span="6")
             mx-radio-mode(v-model="mode")
 
+          el-col(:span="2")
+            mx-form-effects(v-model="effects")
+
           el-col(:span="12")
             mx-toolset(
               @reset="onReset"
-              @zoomin="onZoomIn"
-              @zoomout="onZoomOut"
             )
 
       el-main
@@ -39,6 +40,7 @@
               :image="image"
               :image-size="imageSize"
               :focus-area="focusArea"
+              :effects="effects"
             )
 
           footer.absolute.mx-details

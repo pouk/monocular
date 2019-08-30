@@ -2,13 +2,6 @@
   nav
     el-button(
       circle
-      disabled
-      title="Level"
-      icon="el-icon-sunrise"
-    )
-
-    el-button(
-      circle
       title="Reset"
       icon="el-icon-refresh"
       @click.prevent="onReset"

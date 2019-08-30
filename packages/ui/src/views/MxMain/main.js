@@ -6,6 +6,7 @@ import MxDisplay from '@/components/MxDisplay'
 import MxMacroLens from '@/components/MxMacroLens'
 import MxToolset from '@/components/MxToolset'
 import MxRadioMode from '@/components/MxRadioMode'
+import MxFormEffects from '@/components/MxFormEffects'
 
 //
 
@@ -32,6 +33,8 @@ const data = () => {
 
   return {
     mode: 'pan',
+    //
+    effects: void 0,
     //
     canvasSize: void 0,
     deltaPan: Distance2.empty(),
@@ -173,7 +176,8 @@ export default {
     MxDisplay,
     MxToolset,
     MxMacroLens,
-    MxRadioMode
+    MxRadioMode,
+    MxFormEffects
   },
   mounted
 }

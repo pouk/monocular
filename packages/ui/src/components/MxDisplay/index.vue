@@ -13,6 +13,7 @@ div.container(
     :image="image"
     :image-size="imageSize"
     :focus-area="focusArea"
+    :effects="effects"
     @update="renderPartial"
   )
 </template>
