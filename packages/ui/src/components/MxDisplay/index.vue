@@ -9,6 +9,13 @@ div.container(
     :style="canvasStyles"
   )
 
+  mx-macro-lens(
+    :image="image"
+    :image-size="imageSize"
+    :focus-area="focusArea"
+    @update="renderPartial"
+  )
+
   slot
 </template>
 

@@ -1,5 +1,7 @@
 import { Measure, Rectangle, Point } from '@monocular/types'
 
+import MxMacroLens from '@/components/MxMacroLens'
+
 // helpers
 
 const cssFor = obj => {
@@ -12,8 +14,8 @@ const cssFor = obj => {
 
   if (Point.is(obj)) {
     return {
-      top: `${obj.x}px`,
-      height: `${obj.y}px`
+      top: `${obj.y}px`,
+      left: `${obj.x}px`
     }
   }
 
@@ -61,33 +63,55 @@ const computed = {
       cssFor(displaySize),
       cssFor(displayPosition)
     ]
+  },
+  context () {
+    const { canvas } = this.$refs
+
+    if (!canvas) return void 0
+
+    return canvas.getContext('2d')
   }
 }
 
 const methods = {
-  render () {
-    const { image } = this
+  render (image) {
+    const { context } = this
 
-    const { canvas } = this.$refs
+    context.drawImage(image, 0, 0)
+  },
+  renderPartial (e) {
+    const { context } = this
+    const { area, imageData } = e
 
-    const ctx = canvas.getContext('2d')
+    const { data } = imageData
+    for (let i = 0; i < data.length; i += 4) {
+      const avg = (data[i] + data[i + 1] + data[i + 2]) / 3
+      data[i] = avg // red
+      data[i + 1] = avg // green
+      data[i + 2] = avg // blue
+    }
 
-    const draw = () => ctx.drawImage(image, 0, 0)
-
-    return image.complete
-      ? draw()
-      : image.addEventListener('load', draw)
+    const { x: dx, y: dy } = area.position
+    context.putImageData(imageData, dx, dy)
   }
 }
 
 function mounted () {
-  this.render()
+  const { image } = this
+
+  const render = () => this.render(image)
+  image.complete
+    ? render()
+    : image.addEventListener('load', render)
 }
 
 export default {
-  name: 'MxCanvas',
+  name: 'MxDisplay',
   props,
   computed,
   methods,
-  mounted
+  mounted,
+  components: {
+    MxMacroLens
+  }
 }

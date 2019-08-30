@@ -1,9 +1,43 @@
+import { throttle } from 'throttle-debounce'
+
 import { Rectangle, Measure } from '@monocular/types'
+
+// helpers
+
+// function greyscale (bitmap) {
+//   const { area, data } = bitmap
+//
+//   const { x, y } = area.size
+//
+//   const avgFor = i => (data[i] + data[i + 1] + data[i + 2]) / 3
+//
+//   for (let dy = 0; dy < y; dy++) {
+//     for (let dx = 0; dx < x; dx++) {
+//       const i = (dy * x + dx) * 4
+//       const avg = avgFor(i)
+//
+//       data[i] = avg
+//       data[i + 1] = avg
+//       data[i + 2] = avg
+//     }
+//   }
+//
+//   return {
+//     area,
+//     data
+//   }
+// }
+
+// specs
 
 const props = {
   image: Image, // eslint-disable-line
   imageSize: Measure,
   focusArea: Rectangle
+}
+
+function data () {
+  return { }
 }
 
 const computed = {
@@ -13,6 +47,12 @@ const computed = {
     if (!canvas) return void 0
 
     return canvas.getContext('2d')
+  }
+}
+
+const watch = {
+  focusArea (area) {
+    this.onRefocus(area)
   }
 }
 
@@ -31,33 +71,28 @@ const methods = {
 
     const { x: sx, y: sy } = area.position
     const { x: sw, y: sh } = area.size
+    const imageData = context.getImageData(sx, sy, sw, sh)
 
-    const data = context.getImageData(sx, sy, sw, sh)
-
-    this.$emit('update', {
+    const bitmap = {
       area,
-      data
-    })
+      imageData
+    }
 
-    this.$emit('update:area', area)
-    this.$emit('update:data', data)
-  }
-}
-
-const watch = {
-  focusArea (area) {
-    this.scan(area)
+    this.$emit('update', bitmap)
   }
 }
 
 function mounted () {
   this.render()
+
+  this.onRefocus = throttle(1000, this.scan)
 }
 
 export default {
   name: 'MxMacroLens',
   props,
   computed,
+  data,
   watch,
   methods,
   mounted
