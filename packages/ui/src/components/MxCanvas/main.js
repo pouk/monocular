@@ -32,10 +32,15 @@ const methods = {
   }
 }
 
+function mounted () {
+  this.render()
+}
+
 export default {
   name: 'MxCanvas',
   props,
   computed,
   watch,
-  methods
+  methods,
+  mounted
 }
