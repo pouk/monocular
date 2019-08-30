@@ -5,6 +5,7 @@ import MxScreenOverlay from '@/components/MxScreenOverlay'
 import MxDisplay from '@/components/MxDisplay'
 import MxMacroLens from '@/components/MxMacroLens'
 import MxToolset from '@/components/MxToolset'
+import MxRadioMode from '@/components/MxRadioMode'
 
 //
 
@@ -30,6 +31,8 @@ const data = () => {
   image.src = imageSource
 
   return {
+    mode: 'pan',
+    //
     canvasSize: void 0,
     deltaPan: Distance2.empty(),
     zoomFactor: 1,
@@ -163,7 +166,8 @@ export default {
     MxScreenOverlay,
     MxDisplay,
     MxToolset,
-    MxMacroLens
+    MxMacroLens,
+    MxRadioMode
   },
   mounted
 }

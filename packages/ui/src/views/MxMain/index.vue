@@ -12,12 +12,17 @@
 
     el-container
 
-      el-header
-        mx-toolset(
-          @reset="onReset"
-          @zoomin="onZoomIn"
-          @zoomout="onZoomOut"
-        )
+      el-header.mx-panel
+        el-row(:gutter="20")
+          el-col(:span="6")
+            mx-radio-mode(v-model="mode")
+
+          el-col(:span="12")
+            mx-toolset(
+              @reset="onReset"
+              @zoomin="onZoomIn"
+              @zoomout="onZoomOut"
+            )
 
       el-main
         div.no-margin.fit-fill.relative(
@@ -59,6 +64,11 @@
 .fit-fill {
   width: 100%;
   height: 100%;
+}
+
+.mx-panel {
+  padding-top: 20px;
+  padding-bottom: 20px;
 }
 
 .mx-nav {
