@@ -2,7 +2,7 @@ import { Measure, Point, Rectangle } from '@monocular/types'
 
 import MxMinimap from '@/components/MxMinimap'
 import MxScreenOverlay from '@/components/MxScreenOverlay'
-import MxCanvas from '@/components/MxCanvas'
+import MxDisplay from '@/components/MxDisplay'
 import MxMacroLens from '@/components/MxMacroLens'
 import MxToolset from '@/components/MxToolset'
 
@@ -161,7 +161,7 @@ export default {
   components: {
     MxMinimap,
     MxScreenOverlay,
-    MxCanvas,
+    MxDisplay,
     MxToolset,
     MxMacroLens
   },

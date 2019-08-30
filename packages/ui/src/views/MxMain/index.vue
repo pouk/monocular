@@ -28,18 +28,12 @@
             @drag="onDrag"
           )
 
-            mx-macro-lens(
-              :image="image"
-              :imageSize="imageSize"
-              :focusArea="focusArea"
-              :data.sync="focusImageData"
-            )
-
-            mx-canvas(
+            mx-display(
               v-if="canvasSize"
               :size="canvasSize"
-              :imageData="focusImageData"
-              :target="focusArea"
+              :image="image"
+              :image-size="imageSize"
+              :focus-area="focusArea"
             )
 
           footer.absolute.mx-details
