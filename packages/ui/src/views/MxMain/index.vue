@@ -27,10 +27,18 @@
           mx-screen-overlay(
             @drag="onDrag"
           )
+
+            mx-macro-lens(
+              :image="image"
+              :imageSize="imageSize"
+              :focusArea="focusArea"
+              :data.sync="focusImageData"
+            )
+
             mx-canvas(
               v-if="canvasSize"
               :size="canvasSize"
-              :image="image"
+              :imageData="focusImageData"
               :target="focusArea"
             )
 

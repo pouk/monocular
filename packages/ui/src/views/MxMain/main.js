@@ -3,6 +3,7 @@ import { Measure, Point, Rectangle } from '@monocular/types'
 import MxMinimap from '@/components/MxMinimap'
 import MxScreenOverlay from '@/components/MxScreenOverlay'
 import MxCanvas from '@/components/MxCanvas'
+import MxMacroLens from '@/components/MxMacroLens'
 import MxToolset from '@/components/MxToolset'
 
 //
@@ -36,7 +37,8 @@ const data = () => {
     //
     image,
     imageSource,
-    imageSize
+    imageSize,
+    focusImageData: void 0
   }
 }
 
@@ -160,7 +162,8 @@ export default {
     MxMinimap,
     MxScreenOverlay,
     MxCanvas,
-    MxToolset
+    MxToolset,
+    MxMacroLens
   },
   mounted
 }
