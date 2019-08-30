@@ -85,7 +85,7 @@ const methods = {
 function mounted () {
   this.render()
 
-  this.onRefocus = throttle(1000, this.scan)
+  this.onRefocus = throttle(400, this.scan)
 }
 
 export default {

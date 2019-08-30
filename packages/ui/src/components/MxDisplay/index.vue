@@ -9,14 +9,12 @@ div.container(
     :style="canvasStyles"
   )
 
-  mx-macro-lens(
+  mx-scaner(
     :image="image"
     :image-size="imageSize"
     :focus-area="focusArea"
     @update="renderPartial"
   )
-
-  slot
 </template>
 
 <script src="./main.js"></script>

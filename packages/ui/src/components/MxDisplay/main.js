@@ -1,6 +1,6 @@
 import { Measure, Rectangle, Point } from '@monocular/types'
 
-import MxMacroLens from '@/components/MxMacroLens'
+import MxScaner from '@/components/MxScaner'
 
 // helpers
 
@@ -83,14 +83,6 @@ const methods = {
     const { context } = this
     const { area, imageData } = e
 
-    const { data } = imageData
-    for (let i = 0; i < data.length; i += 4) {
-      const avg = (data[i] + data[i + 1] + data[i + 2]) / 3
-      data[i] = avg // red
-      data[i + 1] = avg // green
-      data[i + 2] = avg // blue
-    }
-
     const { x: dx, y: dy } = area.position
     context.putImageData(imageData, dx, dy)
   }
@@ -112,6 +104,6 @@ export default {
   methods,
   mounted,
   components: {
-    MxMacroLens
+    MxScaner
   }
 }
