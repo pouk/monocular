@@ -1,9 +1,14 @@
+import * as R from 'ramda'
+
 import { Measure, Point, Rectangle } from '@monocular/types'
 
 import MxMinimap from '@/components/MxMinimap'
 import MxScreenOverlay from '@/components/MxScreenOverlay'
-import MxCanvas from '@/components/MxCanvas'
+import MxDisplay from '@/components/MxDisplay'
+import MxMacroLens from '@/components/MxMacroLens'
 import MxToolset from '@/components/MxToolset'
+import MxRadioMode from '@/components/MxRadioMode'
+import MxFormEffects from '@/components/MxFormEffects'
 
 //
 
@@ -29,10 +34,17 @@ const data = () => {
   image.src = imageSource
 
   return {
+    mode: 'pan',
+    //
+    effects: void 0,
+    //
     canvasSize: void 0,
+    //
     deltaPan: Distance2.empty(),
+    //
     zoomFactor: 1,
-    initialZoom: 1,
+    zoomMin: 1,
+    zoomMax: 10,
     //
     image,
     imageSource,
@@ -67,8 +79,8 @@ const computed = {
       const dx = focusSize.x / 2
       const dy = focusSize.y / 2
 
-      const x = Math.max(dx, Math.min(imageSize.x - dx, point.x))
-      const y = Math.max(dy, Math.min(imageSize.y - dy, point.y))
+      const x = R.clamp(dx, imageSize.x - dx, point.x)
+      const y = R.clamp(dy, imageSize.y - dy, point.y)
 
       this.deltaPan = Distance2.create(x, y)
     }
@@ -78,7 +90,7 @@ const computed = {
 
     if (!canvasSize) return void 0
 
-    return canvasSize.scale(zoomFactor)
+    return canvasSize.scale(1 / zoomFactor)
   },
   focusArea () {
     const { focusPosition, focusSize } = this
@@ -96,30 +108,36 @@ const computed = {
   }
 }
 
-const watch = {
-  canvasSize () {
-    console.log('isReady')
-  }
-}
+const watch = { }
 
 const methods = {
   onDrag (e) {
+    const { mode } = this
+
+    switch (mode) {
+      case 'pan':
+        return this.doPan(e)
+      case 'zoom':
+        return this.doZoom(e)
+    }
+  },
+  doPan (e) {
     const { focusPosition, zoomFactor } = this
 
     const movement = e.movement
-      .scale(zoomFactor)
+      .scale(1 / zoomFactor)
       .invert()
 
     this.focusPosition = focusPosition.translateBy(movement)
   },
-  onZoomIn () {
-    this.zoomFactor *= 0.8
-  },
-  onZoomOut () {
-    const zoomFactor = this.zoomFactor / 0.8
+  doZoom (e) {
+    const { zoomMin, zoomMax } = this
 
-    this.zoomFactor = Math.min(zoomFactor, this.initialZoom)
-    this.focusPosition = this.focusPosition.translate(0, 0)
+    const delta = e.movement.y / 100
+
+    const factor = this.zoomFactor - delta
+
+    this.zoomFactor = R.clamp(zoomMin, zoomMax, factor)
   },
   onReset () {
     this.resetLayout()
@@ -134,11 +152,11 @@ const methods = {
     const imageARC = aspectRatioOf(imageSize)
     const displayARC = aspectRatioOf(canvasSize)
 
-    this.initialZoom = imageARC < displayARC
-      ? imageSize.x / canvasSize.x
-      : imageSize.y / canvasSize.y
+    this.zoomMin = imageARC < displayARC
+      ? canvasSize.x / imageSize.x
+      : canvasSize.y / imageSize.y
 
-    this.zoomFactor = this.initialZoom
+    this.zoomFactor = this.zoomMin
 
     this.deltaPan = imageSize.scale(1 / 2)
 
@@ -159,8 +177,11 @@ export default {
   components: {
     MxMinimap,
     MxScreenOverlay,
-    MxCanvas,
-    MxToolset
+    MxDisplay,
+    MxToolset,
+    MxMacroLens,
+    MxRadioMode,
+    MxFormEffects
   },
   mounted
 }

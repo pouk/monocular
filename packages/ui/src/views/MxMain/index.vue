@@ -12,12 +12,18 @@
 
     el-container
 
-      el-header
-        mx-toolset(
-          @reset="onReset"
-          @zoomin="onZoomIn"
-          @zoomout="onZoomOut"
-        )
+      el-header.mx-panel
+        el-row(:gutter="20")
+          el-col(:span="6")
+            mx-radio-mode(v-model="mode")
+
+          el-col(:span="2")
+            mx-form-effects(v-model="effects")
+
+          el-col(:span="12")
+            mx-toolset(
+              @reset="onReset"
+            )
 
       el-main
         div.no-margin.fit-fill.relative(
@@ -27,11 +33,14 @@
           mx-screen-overlay(
             @drag="onDrag"
           )
-            mx-canvas(
+
+            mx-display(
               v-if="canvasSize"
               :size="canvasSize"
               :image="image"
-              :target="focusArea"
+              :image-size="imageSize"
+              :focus-area="focusArea"
+              :effects="effects"
             )
 
           footer.absolute.mx-details
@@ -57,6 +66,11 @@
 .fit-fill {
   width: 100%;
   height: 100%;
+}
+
+.mx-panel {
+  padding-top: 20px;
+  padding-bottom: 20px;
 }
 
 .mx-nav {
