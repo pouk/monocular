@@ -19,7 +19,7 @@ el-popover(
         disabled
         :min="-100"
         :max="100"
-        v-model="window"
+        :value="0"
       )
 
     el-form-item(label="Level")
@@ -27,7 +27,7 @@ el-popover(
         disabled
         :min="-100"
         :max="100"
-        v-model="level"
+        :value="0"
       )
 
   el-button(

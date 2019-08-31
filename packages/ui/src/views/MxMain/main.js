@@ -1,3 +1,5 @@
+import * as R from 'ramda'
+
 import { Measure, Point, Rectangle } from '@monocular/types'
 
 import MxMinimap from '@/components/MxMinimap'
@@ -37,14 +39,16 @@ const data = () => {
     effects: void 0,
     //
     canvasSize: void 0,
+    //
     deltaPan: Distance2.empty(),
+    //
     zoomFactor: 1,
-    initialZoom: 1,
+    zoomMin: 1,
+    zoomMax: 10,
     //
     image,
     imageSource,
-    imageSize,
-    focusImageData: void 0
+    imageSize
   }
 }
 
@@ -75,8 +79,8 @@ const computed = {
       const dx = focusSize.x / 2
       const dy = focusSize.y / 2
 
-      const x = Math.max(dx, Math.min(imageSize.x - dx, point.x))
-      const y = Math.max(dy, Math.min(imageSize.y - dy, point.y))
+      const x = R.clamp(dx, imageSize.x - dx, point.x)
+      const y = R.clamp(dy, imageSize.y - dy, point.y)
 
       this.deltaPan = Distance2.create(x, y)
     }
@@ -86,7 +90,7 @@ const computed = {
 
     if (!canvasSize) return void 0
 
-    return canvasSize.scale(zoomFactor)
+    return canvasSize.scale(1 / zoomFactor)
   },
   focusArea () {
     const { focusPosition, focusSize } = this
@@ -121,19 +125,19 @@ const methods = {
     const { focusPosition, zoomFactor } = this
 
     const movement = e.movement
-      .scale(zoomFactor)
+      .scale(1 / zoomFactor)
       .invert()
 
     this.focusPosition = focusPosition.translateBy(movement)
   },
   doZoom (e) {
-    const { initialZoom } = this
+    const { zoomMin, zoomMax } = this
 
     const delta = e.movement.y / 100
 
-    const factor = this.zoomFactor + delta
+    const factor = this.zoomFactor - delta
 
-    this.zoomFactor = Math.min(initialZoom, Math.max(0.1, factor))
+    this.zoomFactor = R.clamp(zoomMin, zoomMax, factor)
   },
   onReset () {
     this.resetLayout()
@@ -148,11 +152,11 @@ const methods = {
     const imageARC = aspectRatioOf(imageSize)
     const displayARC = aspectRatioOf(canvasSize)
 
-    this.initialZoom = imageARC < displayARC
-      ? imageSize.x / canvasSize.x
-      : imageSize.y / canvasSize.y
+    this.zoomMin = imageARC < displayARC
+      ? canvasSize.x / imageSize.x
+      : canvasSize.y / imageSize.y
 
-    this.zoomFactor = this.initialZoom
+    this.zoomFactor = this.zoomMin
 
     this.deltaPan = imageSize.scale(1 / 2)
 

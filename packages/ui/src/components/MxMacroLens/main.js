@@ -2,42 +2,12 @@ import { throttle } from 'throttle-debounce'
 
 import { Rectangle, Measure } from '@monocular/types'
 
-// helpers
-
-// function greyscale (bitmap) {
-//   const { area, data } = bitmap
-//
-//   const { x, y } = area.size
-//
-//   const avgFor = i => (data[i] + data[i + 1] + data[i + 2]) / 3
-//
-//   for (let dy = 0; dy < y; dy++) {
-//     for (let dx = 0; dx < x; dx++) {
-//       const i = (dy * x + dx) * 4
-//       const avg = avgFor(i)
-//
-//       data[i] = avg
-//       data[i + 1] = avg
-//       data[i + 2] = avg
-//     }
-//   }
-//
-//   return {
-//     area,
-//     data
-//   }
-// }
-
 // specs
 
 const props = {
   image: Image, // eslint-disable-line
   imageSize: Measure,
   focusArea: Rectangle
-}
-
-function data () {
-  return { }
 }
 
 const computed = {
@@ -73,12 +43,10 @@ const methods = {
     const { x: sw, y: sh } = area.size
     const imageData = context.getImageData(sx, sy, sw, sh)
 
-    const bitmap = {
+    this.$emit('update', {
       area,
       imageData
-    }
-
-    this.$emit('update', bitmap)
+    })
   }
 }
 
@@ -92,7 +60,6 @@ export default {
   name: 'MxMacroLens',
   props,
   computed,
-  data,
   watch,
   methods,
   mounted

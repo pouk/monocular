@@ -1,13 +1,17 @@
+import * as R from 'ramda'
+
+//
+
+const defaults = R.always({
+  invert: false,
+  window: 0,
+  level: 0
+})
+
 const props = {
   value: {
     type: Object,
-    default () {
-      return {
-        invert: false,
-        window: 0,
-        level: 0
-      }
-    }
+    default: defaults
   }
 }
 
@@ -17,28 +21,14 @@ const computed = {
       return this.value.invert
     },
     set (invert) {
-      const form = Object.assign({}, this.value, { invert })
+      const form = R.merge(this.value, { invert })
       this.$emit('input', form)
     }
   }
 }
 
-function data () {
-  return {
-    level: 0,
-    window: 0
-  }
-}
-
-const watch = {}
-
-const methods = {}
-
 export default {
   name: 'MxFormEffects',
   props,
-  computed,
-  data,
-  watch,
-  methods
+  computed
 }
