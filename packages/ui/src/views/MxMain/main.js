@@ -5,7 +5,6 @@ import { Measure, Point, Rectangle } from '@monocular/types'
 import MxMinimap from '@/components/MxMinimap'
 import MxScreenOverlay from '@/components/MxScreenOverlay'
 import MxDisplay from '@/components/MxDisplay'
-import MxMacroLens from '@/components/MxMacroLens'
 import MxToolset from '@/components/MxToolset'
 import MxRadioMode from '@/components/MxRadioMode'
 import MxFormEffects from '@/components/MxFormEffects'
@@ -179,7 +178,6 @@ export default {
     MxScreenOverlay,
     MxDisplay,
     MxToolset,
-    MxMacroLens,
     MxRadioMode,
     MxFormEffects
   },
