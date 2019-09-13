@@ -1,3 +1,5 @@
+import { render } from './gl'
+
 const props = {
   src: {
     type: String,
@@ -11,19 +13,20 @@ const props = {
   }
 }
 
-const methods = {}
+const methods = {
+  render (image) {
+    const { canvas } = this.$refs
+
+    render(canvas, image)
+  }
+}
 
 function mounted () {
   const { src } = this
 
-  const { canvas } = this.$refs
-
-  // init 2d context
-  const ctx = canvas.getContext('2d')
-
   // load image
   const image = new Image() // eslint-disable-line
-  const render = () => ctx.drawImage(image, 0, 0)
+  const render = () => this.render(image)
 
   image.src = src
   image.complete
