@@ -40,6 +40,7 @@
     "css-modules-require-hook": "^4.2.3",
     "eslint": "^5.16.0",
     "eslint-plugin-vue": "^5.0.0",
+    "glsl-shader-loader": "^0.1.6",
     "lint-staged": "^9.2.3",
     "require-extension-hooks": "^0.3.3",
     "require-extension-hooks-babel": "^1.0.0",
