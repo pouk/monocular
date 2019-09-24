@@ -1,6 +1,6 @@
 import { Measure, Rectangle, Point } from '@monocular/types'
 
-import MxScaner from '@/components/MxScaner'
+import MxImage from '@/components/MxImage'
 
 // helpers
 
@@ -27,7 +27,7 @@ const cssFor = obj => {
 const props = {
   size: Measure,
   imageSize: Measure,
-  image: Image, // eslint-disable-line
+  imageSource: String, // eslint-disable-line
   focusArea: Rectangle,
   effects: Object
 }
@@ -74,37 +74,11 @@ const computed = {
   }
 }
 
-const methods = {
-  render (image) {
-    const { context } = this
-
-    context.drawImage(image, 0, 0)
-  },
-  renderPartial (e) {
-    const { context } = this
-    const { area, imageData } = e
-
-    const { x: dx, y: dy } = area.position
-    context.putImageData(imageData, dx, dy)
-  }
-}
-
-function mounted () {
-  const { image } = this
-
-  const render = () => this.render(image)
-  image.complete
-    ? render()
-    : image.addEventListener('load', render)
-}
-
 export default {
   name: 'MxDisplay',
   props,
   computed,
-  methods,
-  mounted,
   components: {
-    MxScaner
+    MxImage
   }
 }

@@ -37,7 +37,7 @@
             mx-display(
               v-if="canvasSize"
               :size="canvasSize"
-              :image="image"
+              :image-source="imageSource"
               :image-size="imageSize"
               :focus-area="focusArea"
               :effects="effects"

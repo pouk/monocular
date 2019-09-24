@@ -2,19 +2,11 @@
 div.container(
   :style="containerStyles"
 )
-  canvas.canvas(
-    ref="canvas"
+  mx-image.canvas(
+    :src="imageSource"
     :width="imageSize.x"
     :height="imageSize.y"
     :style="canvasStyles"
-  )
-
-  mx-scaner(
-    :image="image"
-    :image-size="imageSize"
-    :focus-area="focusArea"
-    :effects="effects"
-    @update="renderPartial"
   )
 </template>
 
